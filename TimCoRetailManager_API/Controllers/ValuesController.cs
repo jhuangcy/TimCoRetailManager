@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -14,6 +15,13 @@ namespace TimCoRetailManager_API.Controllers
         public IEnumerable<string> Get()
         {
             return new string[] { "value1", "value2" };
+        }
+
+        // This also works, like above
+        public IHttpActionResult Get2()
+        {
+            var userId = RequestContext.Principal.Identity.GetUserId();
+            return Ok(new string[] { "value1", "value2", userId });
         }
 
         // GET api/values/5
