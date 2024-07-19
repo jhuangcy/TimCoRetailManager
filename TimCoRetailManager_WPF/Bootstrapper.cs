@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using TimCoRetailManager_WPF.Services;
 using TimCoRetailManager_WPF.ViewModels;
 
 namespace TimCoRetailManager_WPF
@@ -34,6 +35,9 @@ namespace TimCoRetailManager_WPF
 
             // Link views to view models
             GetType().Assembly.GetTypes().Where(t => t.IsClass && t.Name.EndsWith("ViewModel")).ToList().ForEach(v => container.RegisterPerRequest(v, v.ToString(), v));
+
+            // Services
+            container.PerRequest<ITestDI, TestDI>();
         }
     }
 }
