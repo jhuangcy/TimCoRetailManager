@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using TimCoRetailManager_WPF.Helpers;
 using TimCoRetailManager_WPF.Services;
 using TimCoRetailManager_WPF.ViewModels;
 
@@ -18,6 +20,9 @@ namespace TimCoRetailManager_WPF
         public Bootstrapper()
         {
             Initialize();
+
+            // https://stackoverflow.com/questions/30631522/caliburn-micro-support-for-passwordbox
+            ConventionManager.AddElementConvention<PasswordBox>(PasswordBoxHelper.BoundPasswordProperty, "Password", "PasswordChanged");
         }
 
         protected override void OnStartup(object sender, StartupEventArgs e)
