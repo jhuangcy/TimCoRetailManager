@@ -14,15 +14,15 @@ namespace TimCoRetailManager_API.Controllers
         // GET api/values
         public IEnumerable<string> Get()
         {
-            return new string[] { "value1", "value2" };
+            var userId = RequestContext.Principal.Identity.GetUserId();
+            return new string[] { "value1", "value2", userId };
         }
 
         // This also works, like above
-        public IHttpActionResult Get2()
-        {
-            var userId = RequestContext.Principal.Identity.GetUserId();
-            return Ok(new string[] { "value1", "value2", userId });
-        }
+        //public IHttpActionResult Get2()
+        //{
+        //    return Ok(new string[] { "value1", "value2" });
+        //}
 
         // GET api/values/5
         public string Get(int id)
