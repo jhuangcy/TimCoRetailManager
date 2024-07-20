@@ -12,7 +12,7 @@ namespace TimCoRetailManager_WPF.Services
 {
     public interface IApiService
     {
-        Task<Token> GetToken(string username, string password);
+        Task<Token> GetTokenAsync(string username, string password);
     }
 
     public class ApiService : IApiService
@@ -26,7 +26,6 @@ namespace TimCoRetailManager_WPF.Services
 
         void InitHttp()
         {
-            // Need to add System.Configuration to references first
             var api = ConfigurationManager.AppSettings["api"];
 
             http = new HttpClient();
@@ -35,7 +34,7 @@ namespace TimCoRetailManager_WPF.Services
             http.BaseAddress = new Uri(api);
         }
 
-        public async Task<Token> GetToken(string username, string password)
+        public async Task<Token> GetTokenAsync(string username, string password)
         {
             var body = new FormUrlEncodedContent(new[] {
                 new KeyValuePair<string, string>("grant_type", "password"),

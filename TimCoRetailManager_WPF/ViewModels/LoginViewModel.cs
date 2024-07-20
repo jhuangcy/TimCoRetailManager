@@ -53,7 +53,7 @@ namespace TimCoRetailManager_WPF.ViewModels
 
             try
             {
-                var token = await _apiService.GetToken(Email, Password);
+                var token = await _apiService.GetTokenAsync(Email, Password);
             }
             catch (Exception ex)
             {
