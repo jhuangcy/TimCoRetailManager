@@ -4,11 +4,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TimCoRetailManager_WPF.Services;
 
 namespace TimCoRetailManager_WPF.ViewModels
 {
     public class LoginViewModel : Screen
     {
+        private readonly IApiService _apiService;
+
+        public LoginViewModel(IApiService apiService)
+        {
+            _apiService = apiService;
+        }
+
         // PROPERTIES
         private string email;
         public string Email
@@ -26,9 +34,16 @@ namespace TimCoRetailManager_WPF.ViewModels
 
         // COMMANDS
         public bool CanLogin => Email?.Length > 0 && Password?.Length > 0;
-        public void Login()
+        public async Task Login()
         {
-
+            try
+            {
+                var user = await _apiService.GetToken(Email, Password);
+            }
+            catch (Exception ex)
+            {
+                
+            }
         }
 
 

@@ -13,7 +13,8 @@ namespace TimCoRetailManager_WPF.Helpers
     public static class PasswordBoxHelper
     {
         public static readonly DependencyProperty BoundPasswordProperty =
-            DependencyProperty.RegisterAttached("BoundPassword",
+            DependencyProperty.RegisterAttached(
+                "BoundPassword",
                 typeof(string),
                 typeof(PasswordBoxHelper),
                 new FrameworkPropertyMetadata(string.Empty, OnBoundPasswordChanged));
@@ -40,12 +41,9 @@ namespace TimCoRetailManager_WPF.Helpers
             d.SetValue(BoundPasswordProperty, value);
         }
 
-        private static void OnBoundPasswordChanged(
-            DependencyObject d,
-            DependencyPropertyChangedEventArgs e)
+        private static void OnBoundPasswordChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var box = d as PasswordBox;
-
             if (box == null)
                 return;
 
@@ -55,12 +53,10 @@ namespace TimCoRetailManager_WPF.Helpers
         private static void PasswordChanged(object sender, RoutedEventArgs e)
         {
             PasswordBox password = sender as PasswordBox;
-
             SetBoundPassword(password, password.Password);
 
             // set cursor past the last character in the password box
             password.GetType().GetMethod("Select", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(password, new object[] { password.Password.Length, 0 });
         }
-
     }
 }

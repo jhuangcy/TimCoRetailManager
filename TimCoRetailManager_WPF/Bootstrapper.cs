@@ -36,13 +36,17 @@ namespace TimCoRetailManager_WPF
         protected override void Configure()
         {
             container.Instance(container);
-            container.Singleton<IWindowManager, WindowManager>().Singleton<IEventAggregator, EventAggregator>();
+            
+            // Services
+            container
+                .Singleton<IWindowManager, WindowManager>()
+                .Singleton<IEventAggregator, EventAggregator>()
+                .Singleton<IApiService, ApiService>();
+
+            container.PerRequest<ITestDI, TestDI>();
 
             // Link views to view models
             GetType().Assembly.GetTypes().Where(t => t.IsClass && t.Name.EndsWith("ViewModel")).ToList().ForEach(v => container.RegisterPerRequest(v, v.ToString(), v));
-
-            // Services
-            container.PerRequest<ITestDI, TestDI>();
         }
     }
 }
