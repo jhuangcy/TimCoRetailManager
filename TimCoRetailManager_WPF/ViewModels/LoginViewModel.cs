@@ -32,21 +32,33 @@ namespace TimCoRetailManager_WPF.ViewModels
             set { password = value; NotifyOfPropertyChange(() => CanLogin); }
         }
 
+        private string errorMsg;
+        public string ErrorMsg
+        {
+            get { return errorMsg; }
+            set { 
+                errorMsg = value; 
+                NotifyOfPropertyChange(() => ErrorMsg);
+                NotifyOfPropertyChange(() => ErrorVisible);
+            }
+        }
+
+        public bool ErrorVisible => ErrorMsg?.Length > 0 ? true : false;
+
         // COMMANDS
         public bool CanLogin => Email?.Length > 0 && Password?.Length > 0;
         public async Task Login()
         {
+            ErrorMsg = "";
+
             try
             {
-                var user = await _apiService.GetToken(Email, Password);
+                var token = await _apiService.GetToken(Email, Password);
             }
             catch (Exception ex)
             {
-                
+                ErrorMsg = ex.Message;
             }
         }
-
-
-
     }
 }

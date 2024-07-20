@@ -14,6 +14,7 @@
             <RowDefinition Height="auto"></RowDefinition>
             <RowDefinition Height="auto"></RowDefinition>
             <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -23,15 +24,22 @@
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
-        
+        <!-- Header -->
         <TextBlock Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" Margin="0 0 0 20" FontSize="64" FontFamily="Segoe UI Light">Login Form</TextBlock>
 
-        <TextBlock Grid.Row="1" Grid.Column="1" Margin="0 0 0 10">Email</TextBlock>
-        <TextBox Grid.Row="1" Grid.Column="2" x:Name="Email" MinWidth="150" Margin="0 0 0 10"></TextBox>
+        <!-- Messages -->
+        <!-- Put the resource in app.xaml: true = visible, false = collapsed -->
+        <TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" x:Name="ErrorMsg" Margin="0 0 0 20" Foreground="Red" MaxWidth="300" TextWrapping="Wrap" Visibility="{Binding ErrorVisible, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}"></TextBlock>
+        
+        <!-- Email -->
+        <TextBlock Grid.Row="2" Grid.Column="1" Margin="0 0 10 10">Email</TextBlock>
+        <TextBox Grid.Row="2" Grid.Column="2" x:Name="Email" MinWidth="350" Margin="0 0 0 10"></TextBox>
 
-        <TextBlock Grid.Row="2" Grid.Column="1" Margin="0 0 0 20">Password</TextBlock>
-        <PasswordBox Grid.Row="2" Grid.Column="2" x:Name="Password" MinWidth="150" Margin="0 0 0 20"></PasswordBox>
+        <!-- Password -->
+        <TextBlock Grid.Row="3" Grid.Column="1" Margin="0 0 10 20">Password</TextBlock>
+        <PasswordBox Grid.Row="3" Grid.Column="2" x:Name="Password" MinWidth="350" Margin="0 0 0 20"></PasswordBox>
 
-        <Button Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" x:Name="Login" HorizontalAlignment="Center" Padding="20 5">Log In</Button>
+        <!-- Submit -->
+        <Button Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" x:Name="Login" HorizontalAlignment="Center" Padding="20 5">Log In</Button>
     </Grid>
 </UserControl>
