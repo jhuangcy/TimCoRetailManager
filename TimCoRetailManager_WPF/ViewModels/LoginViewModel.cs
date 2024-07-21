@@ -4,16 +4,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TimCoRetailManager_WPF.EventModels;
 using TimCoRetailManager_WPF.Library.Services;
 
 namespace TimCoRetailManager_WPF.ViewModels
 {
     public class LoginViewModel : Screen
     {
+        private readonly IEventAggregator _events;
         private readonly IApiService _apiService;
 
-        public LoginViewModel(IApiService apiService)
+        public LoginViewModel(IEventAggregator events, IApiService apiService)
         {
+            _events = events;
             _apiService = apiService;
         }
 
@@ -56,6 +59,8 @@ namespace TimCoRetailManager_WPF.ViewModels
             {
                 var token = await _apiService.GetTokenAsync(Email, Password);
                 await _apiService.GetUserAsync(token.access_token);
+
+                _events.PublishOnUIThread(new LoginEvent());    // raise event
             }
             catch (Exception ex)
             {

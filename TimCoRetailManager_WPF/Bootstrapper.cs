@@ -42,7 +42,7 @@ namespace TimCoRetailManager_WPF
             // Services
             container
                 .Singleton<IWindowManager, WindowManager>()
-                .Singleton<IEventAggregator, EventAggregator>()
+                .Singleton<IEventAggregator, EventAggregator>() // for broadcasting and listening to events
                 .Singleton<IApiService, ApiService>()
 
                 .Singleton<IUser, User>();  // App wide user

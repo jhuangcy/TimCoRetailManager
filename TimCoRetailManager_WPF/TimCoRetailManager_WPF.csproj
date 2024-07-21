@@ -69,6 +69,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="EventModels\LoginEvent.cs" />
     <Compile Include="Helpers\PasswordBoxHelper.cs" />
     <Compile Include="Services\ITestDI.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
