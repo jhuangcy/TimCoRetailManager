@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TimCoRetailManager_WPF.Services;
+using TimCoRetailManager_WPF.Library.Services;
 
 namespace TimCoRetailManager_WPF.ViewModels
 {
@@ -54,6 +54,7 @@ namespace TimCoRetailManager_WPF.ViewModels
             try
             {
                 var token = await _apiService.GetTokenAsync(Email, Password);
+                await _apiService.GetUserAsync(token.access_token);
             }
             catch (Exception ex)
             {

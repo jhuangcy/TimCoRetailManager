@@ -11,7 +11,7 @@ namespace TimCoRetailManager_WPF.ViewModels
     // This will be the main container view model that will load other view models into it
     public class ShellViewModel : Conductor<object>
     {
-        private readonly ITestDI _testDI;
+        //private readonly ITestDI _testDI;
 
         private readonly LoginViewModel _loginViewModel;
 

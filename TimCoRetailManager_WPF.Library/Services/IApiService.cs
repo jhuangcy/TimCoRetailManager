@@ -6,22 +6,26 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
-using TimCoRetailManager_WPF.Models;
+using TimCoRetailManager_WPF.Library.Models;
 
-namespace TimCoRetailManager_WPF.Services
+namespace TimCoRetailManager_WPF.Library.Services
 {
     public interface IApiService
     {
         Task<Token> GetTokenAsync(string username, string password);
+        Task GetUserAsync(string token);
     }
 
     public class ApiService : IApiService
     {
+        private readonly IUser _user;
+
         HttpClient http { get; set; }
 
-        public ApiService()
+        public ApiService(IUser user)
         {
             InitHttp();
+            _user = user;
         }
 
         void InitHttp()
@@ -48,6 +52,29 @@ namespace TimCoRetailManager_WPF.Services
                     return await res.Content.ReadAsAsync<Token>();
 
                 throw new Exception(res.ReasonPhrase);
+            }
+        }
+
+        public async Task GetUserAsync(string token)
+        {
+            // https://stackoverflow.com/questions/14627399/setting-authorization-header-of-httpclient
+            http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
+
+            using (var res = await http.GetAsync("/api/users/getone"))
+            {
+                if (res.IsSuccessStatusCode)
+                {
+                    var user = await res.Content.ReadAsAsync<User>();
+
+                    _user.IdentityUserId = user.IdentityUserId;
+                    _user.FirstName = user.FirstName;
+                    _user.LastName = user.LastName;
+                    _user.Email = user.Email;
+                    _user.CreatedDate = user.CreatedDate;
+                    _user.Token = token;
+                }
+                else 
+                    throw new Exception(res.ReasonPhrase);
             }
         }
     }

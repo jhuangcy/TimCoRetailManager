@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TimCoRetailManager_WPF.Models
+namespace TimCoRetailManager_WPF.Library.Models
 {
     public class Token
     {

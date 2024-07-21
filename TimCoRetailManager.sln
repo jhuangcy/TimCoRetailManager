@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimCoRetailManager_WPF", "T
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimCoRetailManager_API.Library", "TimCoRetailManager_API.Library\TimCoRetailManager_API.Library.csproj", "{8D900CC9-50CE-45FA-BDC1-584B54D16A56}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimCoRetailManager_WPF.Library", "TimCoRetailManager_WPF.Library\TimCoRetailManager_WPF.Library.csproj", "{D552F532-7C4F-4A84-8346-71B2475A1C63}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +37,10 @@ Global
 		{8D900CC9-50CE-45FA-BDC1-584B54D16A56}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8D900CC9-50CE-45FA-BDC1-584B54D16A56}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8D900CC9-50CE-45FA-BDC1-584B54D16A56}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D552F532-7C4F-4A84-8346-71B2475A1C63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D552F532-7C4F-4A84-8346-71B2475A1C63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D552F532-7C4F-4A84-8346-71B2475A1C63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D552F532-7C4F-4A84-8346-71B2475A1C63}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
