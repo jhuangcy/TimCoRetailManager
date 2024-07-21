@@ -1,0 +1,70 @@
+﻿<UserControl x:Class="TimCoRetailManager_WPF.Views.SalesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TimCoRetailManager_WPF.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="550" d:DesignWidth="800" FontSize="24" Background="White">
+    <!-- "DesignHeight" changed to 550 to see the checkout button in design time -->
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"></ColumnDefinition>
+            <ColumnDefinition Width="auto"></ColumnDefinition>
+            <ColumnDefinition Width="auto"></ColumnDefinition>
+            <ColumnDefinition Width="auto"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <!-- Header -->
+        <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" FontSize="48" Margin="0 0 0 20" Text="Sales Page"></TextBlock>
+        
+        <!-- Products -->
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="Items"></TextBlock>
+        <ListBox Grid.Row="2" Grid.Column="0" x:Name="Products" MinHeight="200" MinWidth="150"></ListBox>
+
+        <!-- User Inputs -->
+        <StackPanel Grid.Row="2" Grid.Column="1" Margin="20 0">
+            <TextBlock Text="Quantity"></TextBlock>
+            <TextBox x:Name="Quantity" MinWidth="100" Margin="0 0 0 10"></TextBox>
+            <Button x:Name="AddToCart" Margin="0 0 0 30" Padding="5" Content="Add to Cart"></Button>
+            <Button x:Name="RemoveFromCart" Padding="5" Content="Remove from Cart"></Button>
+        </StackPanel>
+
+        <!-- Cart -->
+        <TextBlock Grid.Row="1" Grid.Column="2" Text="Cart"></TextBlock>
+        <ListBox Grid.Row="2" Grid.Column="2" x:Name="Cart" MinHeight="200" MinWidth="150"></ListBox>
+
+        <!-- Subtotal -->
+        <DockPanel Grid.Row="3" Grid.Column="2">
+            <TextBlock Margin="0 0 15 0" Text="Subtotal:"></TextBlock>
+            <TextBlock x:Name="Subtotal" TextAlignment="Right" Text="$0.00"></TextBlock>
+        </DockPanel>
+
+        <!-- Tax -->
+        <DockPanel Grid.Row="4" Grid.Column="2">
+            <TextBlock Text="Tax:"></TextBlock>
+            <TextBlock x:Name="Tax" TextAlignment="Right" Text="$0.00"></TextBlock>
+        </DockPanel>
+
+        <!-- Total -->
+        <DockPanel Grid.Row="5" Grid.Column="2">
+            <TextBlock Text="Total:"></TextBlock>
+            <TextBlock x:Name="Total" TextAlignment="Right" Text="$0.00"></TextBlock>
+        </DockPanel>
+
+        <!-- Checkout -->
+        <Button Grid.Row="6" Grid.Column="2" x:Name="Checkout" Margin="0 20 0 0" Padding="5" Content="Checkout"></Button>
+    </Grid>
+</UserControl>

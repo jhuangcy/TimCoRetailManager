@@ -45,6 +45,7 @@ namespace TimCoRetailManager_WPF.ViewModels
 
         public bool ErrorVisible => ErrorMsg?.Length > 0 ? true : false;
 
+
         // COMMANDS
         public bool CanLogin => Email?.Length > 0 && Password?.Length > 0;
         public async Task Login()
