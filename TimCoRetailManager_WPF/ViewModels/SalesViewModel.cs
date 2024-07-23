@@ -27,36 +27,68 @@ namespace TimCoRetailManager_WPF.ViewModels
             set { products = value; NotifyOfPropertyChange(() => Products); }
         }
 
-        private int quantity;
-        public int Quantity
+        private Product product;
+        public Product Product
         {
-            get { return quantity; }
-            set { quantity = value; NotifyOfPropertyChange(() => Quantity); }
+            get { return product; }
+            set { 
+                product = value; 
+                NotifyOfPropertyChange(() => Product);
+                NotifyOfPropertyChange(() => CanAddToCart);
+            }
         }
 
-        private BindingList<string> cart;
-        public BindingList<string> Cart
+
+        private int qty = 1;
+        public int Qty
+        {
+            get { return qty; }
+            set { 
+                qty = value; 
+                NotifyOfPropertyChange(() => Qty);
+                NotifyOfPropertyChange(() => CanAddToCart);
+            }
+        }
+
+        private BindingList<CartItem> cart = new BindingList<CartItem>();
+        public BindingList<CartItem> Cart
         {
             get { return cart; }
             set { cart = value; NotifyOfPropertyChange(() => Cart); }
         }
 
-        public string Subtotal => "$0.00";
+        // https://stackoverflow.com/questions/428798/map-and-reduce-in-net
+        // https://stackoverflow.com/questions/37328681/how-to-convert-int-to-decimal-in-net
+        public string Subtotal => Cart.Aggregate(0m, (acc, i) => acc += i.Product.RetailPrice * i.Qty).ToString("C");
         public string Tax => "$0.00";
         public string Total => "$0.00";
 
 
         // COMMANDS
-        public bool CanAddToCart => true;
-        public void AddToCart()
+        public bool CanAddToCart => Qty > 0 && Product?.Qty >= Qty;
+        public void AddToCart() 
         {
-            
-        }
+            var existing = Cart.FirstOrDefault(i => i.Product == Product);
+            if (existing == null)
+                Cart.Add(new CartItem { Product = Product, Qty = Qty });
+            else
+            {
+                existing.Qty += Qty;
+                Cart.Remove(existing);
+                Cart.Add(existing);
+            }
 
+            Product.Qty -= Qty;
+            Qty = 1;
+
+            NotifyOfPropertyChange(() => Subtotal);
+        }
+        
         public bool CanRemoveFromCart => true;
         public void RemoveFromCart()
         {
 
+            NotifyOfPropertyChange(() => Subtotal);
         }
 
         public bool CanCheckout => true;
@@ -67,8 +99,6 @@ namespace TimCoRetailManager_WPF.ViewModels
 
 
         // LIFECYCLE
-        protected override async void OnViewLoaded(object view) => await LoadProducts();
-        
-        async Task LoadProducts() => Products = new BindingList<Product>(await _productService.GetAllAsync());
+        protected override async void OnViewLoaded(object view) => Products = new BindingList<Product>(await _productService.GetAllAsync());
     }
 }

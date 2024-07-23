@@ -31,11 +31,11 @@
         <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" FontSize="48" Margin="0 0 0 20" Text="Sales Page"></TextBlock>
         
         <!-- Products -->
-        <TextBlock Grid.Row="1" Grid.Column="0" Text="Items"></TextBlock>
-        <ListBox Grid.Row="2" Grid.Column="0" x:Name="Products" MinHeight="200" MinWidth="150">
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="Products"></TextBlock>
+        <ListBox Grid.Row="2" Grid.Column="0" x:Name="Products" SelectedItem="{Binding Product}" MinHeight="200" MinWidth="150">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding Name}"></TextBlock>
+                    <TextBlock Text="{Binding DisplayText}"></TextBlock>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
@@ -43,14 +43,21 @@
         <!-- User Inputs -->
         <StackPanel Grid.Row="2" Grid.Column="1" Margin="20 0">
             <TextBlock Text="Quantity"></TextBlock>
-            <TextBox x:Name="Quantity" MinWidth="100" Margin="0 0 0 10"></TextBox>
+            <TextBox x:Name="Qty" MinWidth="100" Margin="0 0 0 10"></TextBox>
             <Button x:Name="AddToCart" Margin="0 0 0 30" Padding="5" Content="Add to Cart"></Button>
             <Button x:Name="RemoveFromCart" Padding="5" Content="Remove from Cart"></Button>
         </StackPanel>
 
         <!-- Cart -->
         <TextBlock Grid.Row="1" Grid.Column="2" Text="Cart"></TextBlock>
-        <ListBox Grid.Row="2" Grid.Column="2" x:Name="Cart" MinHeight="200" MinWidth="150"></ListBox>
+        <ListBox Grid.Row="2" Grid.Column="2" x:Name="Cart" MinHeight="200" MinWidth="150">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <!--<TextBlock Text="{Binding Product.Name}"></TextBlock>-->
+                    <TextBlock Text="{Binding DisplayText}"></TextBlock>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
 
         <!-- Subtotal -->
         <DockPanel Grid.Row="3" Grid.Column="2">

@@ -40,6 +40,6 @@
         <PasswordBox Grid.Row="3" Grid.Column="2" x:Name="Password" MinWidth="350" Margin="0 0 0 20"></PasswordBox>
 
         <!-- Submit -->
-        <Button Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" x:Name="Login" HorizontalAlignment="Center" Padding="20 5">Log In</Button>
+        <Button Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" x:Name="Login" HorizontalAlignment="Center" Padding="20 5" IsDefault="True">Log In</Button>
     </Grid>
 </UserControl>
