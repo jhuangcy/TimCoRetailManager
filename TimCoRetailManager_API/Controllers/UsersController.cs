@@ -30,7 +30,7 @@ namespace TimCoRetailManager_API.Controllers
         // GET: api/Users/GetOne
         public async Task<User> GetOne()
         {
-            var userService = new UserService();
+            IUserService userService = new UserService();
 
             var id = RequestContext.Principal.Identity.GetUserId();
             return await userService.FindOneAsync(id);
