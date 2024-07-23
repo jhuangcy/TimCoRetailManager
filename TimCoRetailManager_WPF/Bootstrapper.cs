@@ -38,7 +38,7 @@ namespace TimCoRetailManager_WPF
         protected override void BuildUp(object instance) => container.BuildUp(instance);
         protected override void Configure()
         {
-            container.Instance(container);  // allows access to container in view models
+            //container.Instance(container);    // allows access to container in view models, but just use IoC
 
             // Services
             container

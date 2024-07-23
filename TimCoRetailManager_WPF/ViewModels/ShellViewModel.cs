@@ -15,23 +15,27 @@ namespace TimCoRetailManager_WPF.ViewModels
         //private readonly ITestDI _testDI;
         private readonly IEventAggregator _events;
 
-        private readonly SimpleContainer _container;
+        //private readonly SimpleContainer _container;
         //private LoginViewModel _loginViewModel;
         private readonly SalesViewModel _salesViewModel;
 
-        public ShellViewModel(ITestDI testDI, IEventAggregator events, SimpleContainer container, /*LoginViewModel loginViewModel,*/ SalesViewModel salesViewModel)
+        public ShellViewModel(ITestDI testDI, IEventAggregator events, /*SimpleContainer container, LoginViewModel loginViewModel,*/ SalesViewModel salesViewModel)
         {
             //_testDI = testDI;
             _events = events;
-            _container = container;
+            //_container = container;
             //_loginViewModel = loginViewModel;
             _salesViewModel = salesViewModel;
 
             _events.Subscribe(this);
 
-            // The container can be used to create a brand new view everytime instead
             //ActivateItem(_loginViewModel);
-            ActivateItem(_container.GetInstance<LoginViewModel>());
+
+            // The container can be used to create a brand new view everytime instead
+            //ActivateItem(_container.GetInstance<LoginViewModel>());
+
+            // Instead of passing container in
+            ActivateItem(IoC.Get<LoginViewModel>());
         }
 
         // Handle specific event broadcasted by other view models
