@@ -15,18 +15,18 @@ namespace TimCoRetailManager_WPF.Library.Services
 
     public class ProductService : IProductService
     {
-        private readonly IApiService _apiService;
+        private readonly IApi _api;
 
-        public ProductService(IApiService apiService)
+        public ProductService(IApi api)
         {
-            _apiService = apiService;
+            _api = api;
         }
 
         public async Task<List<Product>> GetAllAsync()
         {
             //_http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
 
-            using (var res = await _apiService.Http.GetAsync("/api/products/get"))
+            using (var res = await _api.Http.GetAsync("/api/products/get"))
             {
                 if (res.IsSuccessStatusCode)
                     return await res.Content.ReadAsAsync<List<Product>>();

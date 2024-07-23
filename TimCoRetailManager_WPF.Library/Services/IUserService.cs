@@ -10,35 +10,21 @@ using TimCoRetailManager_WPF.Library.Models;
 
 namespace TimCoRetailManager_WPF.Library.Services
 {
-    public interface IApiService
+    public interface IUserService
     {
-        HttpClient Http { get; }
-
         Task<Token> GetTokenAsync(string username, string password);
         Task GetUserAsync(string token);
     }
 
-    public class ApiService : IApiService
+    public class UserService : IUserService
     {
-        HttpClient _http;
-        public HttpClient Http => _http;
-
+        private readonly IApi _api;
         private readonly IUser _user;
 
-        public ApiService(IUser user)
+        public UserService(IApi api, IUser user)
         {
-            InitHttp();
+            _api = api;
             _user = user;
-        }
-
-        void InitHttp()
-        {
-            var api = ConfigurationManager.AppSettings["api"];
-
-            _http = new HttpClient();
-            _http.DefaultRequestHeaders.Accept.Clear();
-            _http.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            _http.BaseAddress = new Uri(api);
         }
 
         public async Task<Token> GetTokenAsync(string username, string password)
@@ -49,7 +35,7 @@ namespace TimCoRetailManager_WPF.Library.Services
                 new KeyValuePair<string, string>("password", password),
             });
 
-            using (var res = await _http.PostAsync("/token", body))
+            using (var res = await _api.Http.PostAsync("/token", body))
             {
                 if (res.IsSuccessStatusCode)
                     return await res.Content.ReadAsAsync<Token>();
@@ -61,9 +47,9 @@ namespace TimCoRetailManager_WPF.Library.Services
         public async Task GetUserAsync(string token)
         {
             // https://stackoverflow.com/questions/14627399/setting-authorization-header-of-httpclient
-            _http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
+            _api.Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
 
-            using (var res = await _http.GetAsync("/api/users/getone"))
+            using (var res = await _api.Http.GetAsync("/api/users/getone"))
             {
                 if (res.IsSuccessStatusCode)
                 {

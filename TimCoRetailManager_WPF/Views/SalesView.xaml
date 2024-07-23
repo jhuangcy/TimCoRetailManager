@@ -32,7 +32,13 @@
         
         <!-- Products -->
         <TextBlock Grid.Row="1" Grid.Column="0" Text="Items"></TextBlock>
-        <ListBox Grid.Row="2" Grid.Column="0" x:Name="Products" MinHeight="200" MinWidth="150"></ListBox>
+        <ListBox Grid.Row="2" Grid.Column="0" x:Name="Products" MinHeight="200" MinWidth="150">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Name}"></TextBlock>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
 
         <!-- User Inputs -->
         <StackPanel Grid.Row="2" Grid.Column="1" Margin="20 0">

@@ -1,0 +1,37 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace TimCoRetailManager_WPF.Library
+{
+    public interface IApi
+    {
+        HttpClient Http { get; }
+    }
+
+    public class Api : IApi
+    {
+        HttpClient _http;
+        public HttpClient Http => _http;
+
+        public Api()
+        {
+            InitHttp();
+        }
+
+        void InitHttp()
+        {
+            var api = ConfigurationManager.AppSettings["api"];
+
+            _http = new HttpClient();
+            _http.DefaultRequestHeaders.Accept.Clear();
+            _http.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            _http.BaseAddress = new Uri(api);
+        }
+    }
+}

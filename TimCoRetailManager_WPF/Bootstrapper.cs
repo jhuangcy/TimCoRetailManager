@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using TimCoRetailManager_WPF.Helpers;
+using TimCoRetailManager_WPF.Library;
 using TimCoRetailManager_WPF.Library.Models;
 using TimCoRetailManager_WPF.Library.Services;
 using TimCoRetailManager_WPF.Services;
@@ -37,15 +38,17 @@ namespace TimCoRetailManager_WPF
         protected override void BuildUp(object instance) => container.BuildUp(instance);
         protected override void Configure()
         {
-            container.Instance(container);
+            container.Instance(container);  // allows access to container in view models
 
             // Services
             container
                 .Singleton<IWindowManager, WindowManager>()
                 .Singleton<IEventAggregator, EventAggregator>() // for broadcasting and listening to events
-                .Singleton<IApiService, ApiService>()
+                .Singleton<IApi, Api>()
+                .Singleton<IUserService, UserService>()
+                .PerRequest<IProductService, ProductService>()
 
-                .Singleton<IUser, User>();  // App wide user
+                .Singleton<IUser, User>();  // app-wide user
 
             container.PerRequest<ITestDI, TestDI>();
 

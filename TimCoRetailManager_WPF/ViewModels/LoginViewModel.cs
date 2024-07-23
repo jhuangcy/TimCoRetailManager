@@ -12,12 +12,12 @@ namespace TimCoRetailManager_WPF.ViewModels
     public class LoginViewModel : Screen
     {
         private readonly IEventAggregator _events;
-        private readonly IApiService _apiService;
+        private readonly IUserService _userService;
 
-        public LoginViewModel(IEventAggregator events, IApiService apiService)
+        public LoginViewModel(IEventAggregator events, IUserService userService)
         {
             _events = events;
-            _apiService = apiService;
+            _userService = userService;
         }
 
         // PROPERTIES
@@ -57,8 +57,8 @@ namespace TimCoRetailManager_WPF.ViewModels
 
             try
             {
-                var token = await _apiService.GetTokenAsync(Email, Password);
-                await _apiService.GetUserAsync(token.access_token);
+                var token = await _userService.GetTokenAsync(Email, Password);
+                await _userService.GetUserAsync(token.access_token);
 
                 _events.PublishOnUIThread(new LoginEvent());    // raise event
             }
