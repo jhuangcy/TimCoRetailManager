@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,10 +13,12 @@ namespace TimCoRetailManager_WPF.ViewModels
 {
     public class SalesViewModel : Screen
     {
+        private readonly IConfigService _configService;
         private readonly IProductService _productService;
 
-        public SalesViewModel(IProductService productService)
+        public SalesViewModel(IConfigService configService, IProductService productService)
         {
+            _configService = configService;
             _productService = productService;
         }
 
@@ -60,8 +63,10 @@ namespace TimCoRetailManager_WPF.ViewModels
         // https://stackoverflow.com/questions/428798/map-and-reduce-in-net
         // https://stackoverflow.com/questions/37328681/how-to-convert-int-to-decimal-in-net
         public string Subtotal => Cart.Aggregate(0m, (acc, i) => acc += i.Product.RetailPrice * i.Qty).ToString("C");
-        public string Tax => "$0.00";
-        public string Total => "$0.00";
+        public string Tax => Cart.Aggregate(0m, (acc, i) => i.Product.Taxable ? acc += i.Product.RetailPrice * i.Qty * (_configService.GetTax() / 100) : acc += 0).ToString("C");
+
+        // https://stackoverflow.com/questions/4953037/problem-parsing-currency-text-to-decimal-type
+        public string Total => (decimal.Parse(Subtotal, NumberStyles.Currency) + decimal.Parse(Tax, NumberStyles.Currency)).ToString("C");
 
 
         // COMMANDS
@@ -82,6 +87,8 @@ namespace TimCoRetailManager_WPF.ViewModels
             Qty = 1;
 
             NotifyOfPropertyChange(() => Subtotal);
+            NotifyOfPropertyChange(() => Tax);
+            NotifyOfPropertyChange(() => Total);
         }
         
         public bool CanRemoveFromCart => true;
@@ -89,6 +96,8 @@ namespace TimCoRetailManager_WPF.ViewModels
         {
 
             NotifyOfPropertyChange(() => Subtotal);
+            NotifyOfPropertyChange(() => Tax);
+            NotifyOfPropertyChange(() => Total);
         }
 
         public bool CanCheckout => true;

@@ -45,6 +45,7 @@ namespace TimCoRetailManager_WPF
                 .Singleton<IWindowManager, WindowManager>()
                 .Singleton<IEventAggregator, EventAggregator>() // for broadcasting and listening to events
                 .Singleton<IApi, Api>()
+                .Singleton<IConfigService, ConfigService>()
                 .Singleton<IUserService, UserService>()
                 .PerRequest<IProductService, ProductService>()
 

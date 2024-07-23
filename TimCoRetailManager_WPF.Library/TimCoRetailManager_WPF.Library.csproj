@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IApi.cs" />
+    <Compile Include="Services\IConfigService.cs" />
     <Compile Include="Models\ICartItem.cs" />
     <Compile Include="Models\IProduct.cs" />
     <Compile Include="Models\Token.cs" />

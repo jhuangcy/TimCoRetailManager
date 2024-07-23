@@ -13,6 +13,7 @@ namespace TimCoRetailManager_WPF.Library.Models
         string Description { get; set; }
         decimal RetailPrice { get; set; }
         int Qty { get; set; }
+        bool Taxable { get; set; }
 
         string DisplayText { get; }
     }
@@ -24,6 +25,7 @@ namespace TimCoRetailManager_WPF.Library.Models
         public string Description { get; set; }
         public decimal RetailPrice { get; set; }
         public int Qty { get; set; }
+        public bool Taxable { get; set; }
 
         public string DisplayText => $"{Name} ({Qty})";
     }

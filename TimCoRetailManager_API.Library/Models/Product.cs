@@ -13,5 +13,6 @@ namespace TimCoRetailManager_API.Library.Models
         public string Description { get; set; }
         public decimal RetailPrice { get; set; }
         public int Qty { get; set; }
+        public bool Taxable { get; set; }
     }
 }
