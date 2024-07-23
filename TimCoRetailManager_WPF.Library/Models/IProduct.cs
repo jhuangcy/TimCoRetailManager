@@ -14,8 +14,6 @@ namespace TimCoRetailManager_WPF.Library.Models
         decimal RetailPrice { get; set; }
         int Qty { get; set; }
         bool Taxable { get; set; }
-
-        string DisplayText { get; }
     }
 
     public class Product
@@ -26,7 +24,5 @@ namespace TimCoRetailManager_WPF.Library.Models
         public decimal RetailPrice { get; set; }
         public int Qty { get; set; }
         public bool Taxable { get; set; }
-
-        public string DisplayText => $"{Name} ({Qty})";
     }
 }

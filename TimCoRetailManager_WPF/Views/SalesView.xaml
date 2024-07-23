@@ -35,7 +35,19 @@
         <ListBox Grid.Row="2" Grid.Column="0" x:Name="Products" SelectedItem="{Binding Product}" MinHeight="200" MinWidth="150">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding DisplayText}"></TextBlock>
+                    <StackPanel>
+                        <TextBlock Text="{Binding Name}"></TextBlock>
+                        <StackPanel Orientation="Horizontal">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock FontSize="14" Text="Price: "></TextBlock>
+                                <TextBlock FontSize="14" Text="{Binding RetailPrice, StringFormat='{}{0:C}'}"></TextBlock>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="5 0 0 0">
+                                <TextBlock FontSize="14" Text="Qty: "></TextBlock>
+                                <TextBlock FontSize="14" Text="{Binding Qty}"></TextBlock>
+                            </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
