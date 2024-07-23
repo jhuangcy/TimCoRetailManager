@@ -62,8 +62,10 @@ namespace TimCoRetailManager_WPF.ViewModels
 
         // https://stackoverflow.com/questions/428798/map-and-reduce-in-net
         // https://stackoverflow.com/questions/37328681/how-to-convert-int-to-decimal-in-net
-        public string Subtotal => Cart.Aggregate(0m, (acc, i) => acc += i.Product.RetailPrice * i.Qty).ToString("C");
-        public string Tax => Cart.Aggregate(0m, (acc, i) => i.Product.Taxable ? acc += i.Product.RetailPrice * i.Qty * (_configService.GetTax() / 100) : acc += 0).ToString("C");
+        //public string Subtotal => Cart.Aggregate(0m, (acc, i) => acc += i.Product.RetailPrice * i.Qty).ToString("C");
+        //public string Tax => Cart.Aggregate(0m, (acc, i) => i.Product.Taxable ? acc += i.Product.RetailPrice * i.Qty * (_configService.GetTax() / 100) : acc += 0).ToString("C");
+        public string Subtotal => Cart.Sum(i => i.Product.RetailPrice * i.Qty).ToString("C");
+        public string Tax => Cart.Where(i => i.Product.Taxable).Sum(i => i.Product.RetailPrice * i.Qty * (_configService.GetTax() / 100)).ToString("C");
 
         // https://stackoverflow.com/questions/4953037/problem-parsing-currency-text-to-decimal-type
         public string Total => (decimal.Parse(Subtotal, NumberStyles.Currency) + decimal.Parse(Tax, NumberStyles.Currency)).ToString("C");
