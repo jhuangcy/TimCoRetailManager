@@ -15,11 +15,13 @@ namespace TimCoRetailManager_WPF.ViewModels
     {
         private readonly IConfigService _configService;
         private readonly IProductService _productService;
+        private readonly ISaleService _saleService;
 
-        public SalesViewModel(IConfigService configService, IProductService productService)
+        public SalesViewModel(IConfigService configService, IProductService productService, ISaleService saleService)
         {
             _configService = configService;
             _productService = productService;
+            _saleService = saleService;
         }
 
         // PROPERTIES
@@ -91,6 +93,7 @@ namespace TimCoRetailManager_WPF.ViewModels
             NotifyOfPropertyChange(() => Subtotal);
             NotifyOfPropertyChange(() => Tax);
             NotifyOfPropertyChange(() => Total);
+            NotifyOfPropertyChange(() => CanCheckout);
         }
         
         public bool CanRemoveFromCart => true;
@@ -100,12 +103,17 @@ namespace TimCoRetailManager_WPF.ViewModels
             NotifyOfPropertyChange(() => Subtotal);
             NotifyOfPropertyChange(() => Tax);
             NotifyOfPropertyChange(() => Total);
+            NotifyOfPropertyChange(() => CanCheckout);
         }
 
-        public bool CanCheckout => true;
-        public void Checkout()
+        public bool CanCheckout => Cart.Any();
+        public async Task Checkout()
         {
+            var sale = new SaleDTO();
+            foreach (var item in Cart)
+                sale.SaleDetails.Add(new SaleDetailDTO { ProductId = item.Product.Id, Qty = item.Qty });
 
+            await _saleService.PostAsync(sale);
         }
 
 

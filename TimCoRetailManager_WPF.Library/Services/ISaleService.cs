@@ -8,27 +8,25 @@ using TimCoRetailManager_WPF.Library.Models;
 
 namespace TimCoRetailManager_WPF.Library.Services
 {
-    public interface IProductService
+    public interface ISaleService
     {
-        Task<List<Product>> GetAllAsync();
+        Task PostAsync(SaleDTO sale);
     }
 
-    public class ProductService : IProductService
+    public class SaleService : ISaleService
     {
         private readonly IApi _api;
 
-        public ProductService(IApi api)
+        public SaleService(IApi api)
         {
             _api = api;
         }
 
-        public async Task<List<Product>> GetAllAsync()
+        public async Task PostAsync(SaleDTO sale)
         {
-            using (var res = await _api.Http.GetAsync("/api/products/get"))
+            using (var res = await _api.Http.PostAsJsonAsync("/api/sales/post", sale))
             {
-                if (res.IsSuccessStatusCode)
-                    return await res.Content.ReadAsAsync<List<Product>>();
-                else
+                if (!res.IsSuccessStatusCode)
                     throw new Exception(res.ReasonPhrase);
             }
         }

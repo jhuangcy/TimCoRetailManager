@@ -6,15 +6,7 @@ using System.Threading.Tasks;
 
 namespace TimCoRetailManager_WPF.Library.Models
 {
-    public interface ICartItem
-    {
-        Product Product { get; set; }
-        int Qty { get; set; }
-
-        string DisplayText { get; }
-    }
-
-    public class CartItem : ICartItem
+    public class CartItem
     {
         public Product Product { get; set; }
         public int Qty { get; set; }

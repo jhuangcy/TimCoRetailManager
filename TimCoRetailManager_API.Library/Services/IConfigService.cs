@@ -5,8 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-// Instead of the UI getting a business value from its own config, the UI will call an api to get it from the server config instead
-namespace TimCoRetailManager_WPF.Library.Services
+namespace TimCoRetailManager_API.Library.Services
 {
     public interface IConfigService
     {

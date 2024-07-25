@@ -21,14 +21,14 @@ namespace TimCoRetailManager_WPF.ViewModels
         }
 
         // PROPERTIES
-        private string email;
+        private string email = "john@gmail.com";
         public string Email
         {
             get { return email; }
             set { email = value; NotifyOfPropertyChange(() => Email); }
         }
 
-        private string password;
+        private string password = "Password1!";
         public string Password
         {
             get { return password; }

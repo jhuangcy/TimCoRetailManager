@@ -16,7 +16,7 @@ namespace TimCoRetailManager_WPF.Library.Models
         bool Taxable { get; set; }
     }
 
-    public class Product
+    public class Product : IProduct
     {
         public int Id { get; set; }
         public string Name { get; set; }

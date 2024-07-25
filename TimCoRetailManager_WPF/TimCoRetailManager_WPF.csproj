@@ -128,9 +128,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\TimCoRetailManager_WPF.Library\TimCoRetailManager_WPF.Library.csproj">
       <Project>{D552F532-7C4F-4A84-8346-71B2475A1C63}</Project>

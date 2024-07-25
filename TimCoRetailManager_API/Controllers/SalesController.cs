@@ -9,44 +9,38 @@ using System.Web.Http;
 using TimCoRetailManager_API.Library.Models;
 using TimCoRetailManager_API.Library.Services;
 
-// WebApiConfig was edited to allow action names
 namespace TimCoRetailManager_API.Controllers
 {
     [Authorize]
-    public class UsersController : ApiController
+    public class SalesController : ApiController
     {
-        // GET: api/Users
+        // GET: api/Sales
         public IEnumerable<string> Get()
         {
             return new string[] { "value1", "value2" };
         }
 
-        // GET: api/Users/5
+        // GET: api/Sales/5
         public string Get(int id)
         {
             return "value";
         }
 
-        // GET: api/Users/GetOne
-        public async Task<User> GetOne()
+        // POST: api/Sales/post
+        public async Task Post([FromBody]SaleDTO sale)
         {
-            IUserService userService = new UserService();
+            ISaleService saleService = new SaleService();
 
             var id = RequestContext.Principal.Identity.GetUserId();
-            return await userService.FindOneAsync(id);
+            await saleService.InsertOne(sale, id);
         }
 
-        // POST: api/Users
-        public void Post([FromBody]string value)
-        {
-        }
-
-        // PUT: api/Users/5
+        // PUT: api/Sales/5
         public void Put(int id, [FromBody]string value)
         {
         }
 
-        // DELETE: api/Users/5
+        // DELETE: api/Sales/5
         public void Delete(int id)
         {
         }

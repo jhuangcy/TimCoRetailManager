@@ -48,6 +48,7 @@ namespace TimCoRetailManager_WPF
                 .Singleton<IConfigService, ConfigService>()
                 .Singleton<IUserService, UserService>()
                 .PerRequest<IProductService, ProductService>()
+                .PerRequest<ISaleService, SaleService>()
 
                 .Singleton<IUser, User>();  // app-wide user
 
