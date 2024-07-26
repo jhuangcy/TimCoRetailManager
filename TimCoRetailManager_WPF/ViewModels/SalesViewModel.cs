@@ -73,6 +73,18 @@ namespace TimCoRetailManager_WPF.ViewModels
             set { cart = value; NotifyOfPropertyChange(() => Cart); }
         }
 
+        private CartItemVM cartItem;
+        public CartItemVM CartItem
+        {
+            get { return cartItem; }
+            set
+            {
+                cartItem = value;
+                NotifyOfPropertyChange(() => CartItem);
+                NotifyOfPropertyChange(() => CanRemoveFromCart);
+            }
+        }
+
         // https://stackoverflow.com/questions/428798/map-and-reduce-in-net
         // https://stackoverflow.com/questions/37328681/how-to-convert-int-to-decimal-in-net
         //public string Subtotal => Cart.Aggregate(0m, (acc, i) => acc += i.Product.RetailPrice * i.Qty).ToString("C");
@@ -110,10 +122,15 @@ namespace TimCoRetailManager_WPF.ViewModels
             NotifyOfPropertyChange(() => CanCheckout);
         }
         
-        public bool CanRemoveFromCart => true;
+        public bool CanRemoveFromCart => CartItem != null && CartItem?.Product.Qty > 0;
         public void RemoveFromCart()
         {
-
+            CartItem.Product.Qty += 1;
+            if (CartItem.Qty > 1)
+                CartItem.Qty -= 1;
+            else
+                cart.Remove(CartItem);
+            
             NotifyOfPropertyChange(() => Subtotal);
             NotifyOfPropertyChange(() => Tax);
             NotifyOfPropertyChange(() => Total);
