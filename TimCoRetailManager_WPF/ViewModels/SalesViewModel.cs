@@ -122,7 +122,7 @@ namespace TimCoRetailManager_WPF.ViewModels
             NotifyOfPropertyChange(() => CanCheckout);
         }
         
-        public bool CanRemoveFromCart => CartItem != null && CartItem?.Product.Qty > 0;
+        public bool CanRemoveFromCart => CartItem != null && CartItem?.Qty > 0;
         public void RemoveFromCart()
         {
             CartItem.Product.Qty += 1;
@@ -135,6 +135,7 @@ namespace TimCoRetailManager_WPF.ViewModels
             NotifyOfPropertyChange(() => Tax);
             NotifyOfPropertyChange(() => Total);
             NotifyOfPropertyChange(() => CanCheckout);
+            NotifyOfPropertyChange(() => CanAddToCart);
         }
 
         public bool CanCheckout => Cart.Any();
@@ -145,14 +146,30 @@ namespace TimCoRetailManager_WPF.ViewModels
                 sale.SaleDetails.Add(new SaleDetailDTO { ProductId = item.Product.Id, Qty = item.Qty });
 
             await _saleService.PostAsync(sale);
+            await ResetView();
         }
 
 
-        // LIFECYCLE
+        // PRIVATE
         protected override async void OnViewLoaded(object view)
         {
+            base.OnViewLoaded(view);
             //Products = new BindingList<Product>(await _productService.GetAllAsync());
-            Products = new BindingList<ProductVM>(_mapper.Map<List<ProductVM>>(await _productService.GetAllAsync()));
+            //Products = new BindingList<ProductVM>(_mapper.Map<List<ProductVM>>(await _productService.GetAllAsync()));
+            await LoadProducts();
+        }
+
+        async Task LoadProducts() => Products = new BindingList<ProductVM>(_mapper.Map<List<ProductVM>>(await _productService.GetAllAsync()));
+
+        async Task ResetView()
+        {
+            Cart = new BindingList<CartItemVM>();
+            await LoadProducts();
+
+            NotifyOfPropertyChange(() => Subtotal);
+            NotifyOfPropertyChange(() => Tax);
+            NotifyOfPropertyChange(() => Total);
+            NotifyOfPropertyChange(() => CanCheckout);
         }
     }
 }
