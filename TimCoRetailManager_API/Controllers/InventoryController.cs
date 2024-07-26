@@ -11,33 +11,36 @@ using TimCoRetailManager_API.Library.Services;
 namespace TimCoRetailManager_API.Controllers
 {
     [Authorize]
-    public class ProductsController : ApiController
+    public class InventoryController : ApiController
     {
-        // GET: api/Products/get
-        public async Task<List<Product>> Get()
+        // GET: api/Inventory/get
+        public async Task<List<Inventory>> Get()
         {
-            IProductService productService = new ProductService();
+            IInventoryService inventoryService = new InventoryService();
 
-            return await productService.FindAll();
+            return await inventoryService.FindAll();
         }
 
-        // GET: api/Products/5
+        // GET: api/Inventory/5
         public string Get(int id)
         {
             return "value";
         }
 
-        // POST: api/Products
-        public void Post([FromBody]string value)
+        // POST: api/Inventory/post
+        public async Task Post([FromBody]Inventory inventory)
         {
+            IInventoryService inventoryService = new InventoryService();
+
+            await inventoryService.InsertOne(inventory);
         }
 
-        // PUT: api/Products/5
+        // PUT: api/Inventory/5
         public void Put(int id, [FromBody]string value)
         {
         }
 
-        // DELETE: api/Products/5
+        // DELETE: api/Inventory/5
         public void Delete(int id)
         {
         }

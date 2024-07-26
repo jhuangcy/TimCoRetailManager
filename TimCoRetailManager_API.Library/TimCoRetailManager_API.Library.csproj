@@ -46,13 +46,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IDb.cs" />
+    <Compile Include="Models\Inventory.cs" />
     <Compile Include="Models\Product.cs" />
     <Compile Include="Models\Sale.cs" />
     <Compile Include="Models\SaleDetail.cs" />
     <Compile Include="Models\SaleDTO.cs" />
     <Compile Include="Models\SaleDetailDTO.cs" />
+    <Compile Include="Models\SaleUserViewModel.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Services\IConfigService.cs" />
+    <Compile Include="Services\IInventoryService.cs" />
     <Compile Include="Services\IProductService.cs" />
     <Compile Include="Services\ISaleService.cs" />
     <Compile Include="Services\IUserService.cs" />

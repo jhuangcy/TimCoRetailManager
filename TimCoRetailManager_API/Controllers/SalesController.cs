@@ -20,6 +20,14 @@ namespace TimCoRetailManager_API.Controllers
             return new string[] { "value1", "value2" };
         }
 
+        // GET: api/Sales/getreports
+        public async Task<List<SaleUserViewModel>> GetReports()
+        {
+            ISaleService saleService = new SaleService();
+
+            return await saleService.FindAllSalesWithUsers();
+        }
+
         // GET: api/Sales/5
         public string Get(int id)
         {

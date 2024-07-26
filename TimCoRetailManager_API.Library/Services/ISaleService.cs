@@ -10,6 +10,7 @@ namespace TimCoRetailManager_API.Library.Services
     public interface ISaleService
     {
         Task InsertOne(SaleDTO saleDto, string userId);
+        Task<List<SaleUserViewModel>> FindAllSalesWithUsers();
     }
 
     public class SaleService : ISaleService
@@ -17,6 +18,7 @@ namespace TimCoRetailManager_API.Library.Services
         public async Task InsertOne(SaleDTO saleDto, string userId)
         {
             //IDb db = new Db();
+
             IProductService productService = new ProductService();
             IConfigService configService = new ConfigService();
             var tax = configService.GetTax();
@@ -75,12 +77,19 @@ namespace TimCoRetailManager_API.Library.Services
 
                     db.Commit();
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     db.Rollback();
                     throw;
                 }
             }
+        }
+
+        public async Task<List<SaleUserViewModel>> FindAllSalesWithUsers()
+        {
+            IDb db = new Db();
+
+            return await db.LoadAsync<SaleUserViewModel, dynamic>("dbo.sp_GetSalesWithUsers", new { }, "TimCoRetailManager_DB");
         }
     }
 }
