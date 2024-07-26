@@ -12,6 +12,7 @@ namespace TimCoRetailManager_WPF.Library
     public interface IApi
     {
         HttpClient Http { get; }
+        void ClearHeaders();
     }
 
     public class Api : IApi
@@ -32,6 +33,12 @@ namespace TimCoRetailManager_WPF.Library
             _http.DefaultRequestHeaders.Accept.Clear();
             _http.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             _http.BaseAddress = new Uri(api);
+        }
+
+        // To remove token
+        public void ClearHeaders()
+        {
+            _http.DefaultRequestHeaders.Clear();
         }
     }
 }

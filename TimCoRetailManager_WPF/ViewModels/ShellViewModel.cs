@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TimCoRetailManager_WPF.EventModels;
+using TimCoRetailManager_WPF.Library;
 using TimCoRetailManager_WPF.Library.Models;
 using TimCoRetailManager_WPF.Services;
 
@@ -15,6 +16,7 @@ namespace TimCoRetailManager_WPF.ViewModels
     {
         //private readonly ITestDI _testDI;
         private readonly IEventAggregator _events;
+        private readonly IApi _api;
 
         //private readonly SimpleContainer _container;
         //private LoginViewModel _loginViewModel;
@@ -22,10 +24,11 @@ namespace TimCoRetailManager_WPF.ViewModels
 
         private readonly IUser _user;
 
-        public ShellViewModel(ITestDI testDI, IEventAggregator events, /*SimpleContainer container, LoginViewModel loginViewModel,*/ SalesViewModel salesViewModel, IUser user)
+        public ShellViewModel(ITestDI testDI, IEventAggregator events, IApi api, /*SimpleContainer container, LoginViewModel loginViewModel,*/ SalesViewModel salesViewModel, IUser user)
         {
             //_testDI = testDI;
             _events = events;
+            _api = api;
             //_container = container;
             //_loginViewModel = loginViewModel;
             _salesViewModel = salesViewModel;
@@ -57,7 +60,8 @@ namespace TimCoRetailManager_WPF.ViewModels
 
         public void Logout()
         {
-            _user.Logout();
+            _user.Clear();
+            _api.ClearHeaders();
             ActivateItem(IoC.Get<LoginViewModel>());
             NotifyOfPropertyChange(() => LoggedIn);
         }

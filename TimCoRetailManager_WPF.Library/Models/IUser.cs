@@ -17,7 +17,7 @@ namespace TimCoRetailManager_WPF.Library.Models
 
         string Token { get; set; }
 
-        void Logout();
+        void Clear();
     }
 
     public class User : IUser
@@ -30,7 +30,7 @@ namespace TimCoRetailManager_WPF.Library.Models
 
         public string Token { get; set; }
 
-        public void Logout()
+        public void Clear()
         {
             IdentityUserId = "";
             FirstName = "";
