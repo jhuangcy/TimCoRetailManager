@@ -12,5 +12,5 @@ begin
 	insert into dbo.Sales (UserId, SaleDate, Subtotal, Tax, Total) 
 	values (@UserId, @SaleDate, @Subtotal, @Tax, @Total);
 
-	select @Id = @@IDENTITY;
+	select @Id = scope_identity();
 end

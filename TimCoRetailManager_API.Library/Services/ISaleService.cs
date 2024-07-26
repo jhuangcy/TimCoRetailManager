@@ -16,7 +16,7 @@ namespace TimCoRetailManager_API.Library.Services
     {
         public async Task InsertOne(SaleDTO saleDto, string userId)
         {
-            IDb db = new Db();
+            //IDb db = new Db();
             IProductService productService = new ProductService();
             IConfigService configService = new ConfigService();
             var tax = configService.GetTax();
@@ -43,6 +43,7 @@ namespace TimCoRetailManager_API.Library.Services
             var sale = new Sale { Subtotal = details.Sum(s => s.SellingPrice), Tax = details.Sum(s => s.Tax), UserId = userId };
             sale.Total = sale.Subtotal + sale.Tax;
 
+            /*
             // Save sale to db
             await db.SaveAsync("dbo.sp_AddSale", sale, "TimCoRetailManager_DB");
 
@@ -54,6 +55,31 @@ namespace TimCoRetailManager_API.Library.Services
             {
                 d.SaleId = saleId;
                 await db.SaveAsync("dbo.sp_AddSaleDetail", d, "TimCoRetailManager_DB");
+            }
+            */
+
+            // Using a transaction instead
+            using (IDb db = new Db())
+            {
+                try
+                {
+                    db.StartTransact("TimCoRetailManager_DB");
+
+                    await db.SaveTransactAsync("dbo.sp_AddSale", sale);
+                    var saleId = (await db.LoadTransactAsync<int, dynamic>("sp_GetSale", new { sale.UserId, sale.SaleDate })).FirstOrDefault();
+                    foreach (var d in details)
+                    {
+                        d.SaleId = saleId;
+                        await db.SaveTransactAsync("dbo.sp_AddSaleDetail", d);
+                    }
+
+                    db.Commit();
+                }
+                catch (Exception ex)
+                {
+                    db.Rollback();
+                    throw;
+                }
             }
         }
     }
