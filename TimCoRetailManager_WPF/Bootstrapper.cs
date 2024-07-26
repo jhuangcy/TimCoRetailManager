@@ -1,4 +1,5 @@
-﻿using Caliburn.Micro;
+﻿using AutoMapper;
+using Caliburn.Micro;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,7 @@ using TimCoRetailManager_WPF.Helpers;
 using TimCoRetailManager_WPF.Library;
 using TimCoRetailManager_WPF.Library.Models;
 using TimCoRetailManager_WPF.Library.Services;
+using TimCoRetailManager_WPF.Models;
 using TimCoRetailManager_WPF.Services;
 using TimCoRetailManager_WPF.ViewModels;
 
@@ -44,6 +46,9 @@ namespace TimCoRetailManager_WPF
             container
                 .Singleton<IWindowManager, WindowManager>()
                 .Singleton<IEventAggregator, EventAggregator>() // for broadcasting and listening to events
+                .Instance(ConfigAutomapper())
+
+                .PerRequest<ITestDI, TestDI>()
                 .Singleton<IApi, Api>()
                 .Singleton<IConfigService, ConfigService>()
                 .Singleton<IUserService, UserService>()
@@ -51,11 +56,16 @@ namespace TimCoRetailManager_WPF
                 .PerRequest<ISaleService, SaleService>()
 
                 .Singleton<IUser, User>();  // app-wide user
-
-            container.PerRequest<ITestDI, TestDI>();
-
+                
             // Link views to view models
             GetType().Assembly.GetTypes().Where(t => t.IsClass && t.Name.EndsWith("ViewModel")).ToList().ForEach(v => container.RegisterPerRequest(v, v.ToString(), v));
         }
+
+        // Automapper
+        IMapper ConfigAutomapper() => new MapperConfiguration(cfg =>
+        {
+            cfg.CreateMap<Product, ProductVM>();
+            cfg.CreateMap<CartItem, CartItemVM>();
+        }).CreateMapper();
     }
 }

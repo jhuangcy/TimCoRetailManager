@@ -1,4 +1,5 @@
-﻿using Caliburn.Micro;
+﻿using AutoMapper;
+using Caliburn.Micro;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,32 +9,40 @@ using System.Text;
 using System.Threading.Tasks;
 using TimCoRetailManager_WPF.Library.Models;
 using TimCoRetailManager_WPF.Library.Services;
+using TimCoRetailManager_WPF.Models;
 
 namespace TimCoRetailManager_WPF.ViewModels
 {
     public class SalesViewModel : Screen
     {
+        private readonly IMapper _mapper;
         private readonly IConfigService _configService;
         private readonly IProductService _productService;
         private readonly ISaleService _saleService;
 
-        public SalesViewModel(IConfigService configService, IProductService productService, ISaleService saleService)
+        public SalesViewModel(IMapper mapper, IConfigService configService, IProductService productService, ISaleService saleService)
         {
+            _mapper = mapper;
             _configService = configService;
             _productService = productService;
             _saleService = saleService;
         }
 
         // PROPERTIES
-        private BindingList<Product> products;
-        public BindingList<Product> Products
+        // Product model is from the lib and doesnt have events when it changes
+        //private BindingList<Product> products;
+        //public BindingList<Product> Products
+        private BindingList<ProductVM> products;
+        public BindingList<ProductVM> Products
         {
             get { return products; }
             set { products = value; NotifyOfPropertyChange(() => Products); }
         }
 
-        private Product product;
-        public Product Product
+        //private Product product;
+        //public Product Product
+        private ProductVM product;
+        public ProductVM Product
         {
             get { return product; }
             set { 
@@ -42,7 +51,6 @@ namespace TimCoRetailManager_WPF.ViewModels
                 NotifyOfPropertyChange(() => CanAddToCart);
             }
         }
-
 
         private int qty = 1;
         public int Qty
@@ -55,8 +63,11 @@ namespace TimCoRetailManager_WPF.ViewModels
             }
         }
 
-        private BindingList<CartItem> cart = new BindingList<CartItem>();
-        public BindingList<CartItem> Cart
+        // CartItem model is from the lib and doesnt have events when it changes
+        //private BindingList<CartItem> cart = new BindingList<CartItem>();
+        //public BindingList<CartItem> Cart
+        private BindingList<CartItemVM> cart = new BindingList<CartItemVM>();
+        public BindingList<CartItemVM> Cart
         {
             get { return cart; }
             set { cart = value; NotifyOfPropertyChange(() => Cart); }
@@ -79,12 +90,15 @@ namespace TimCoRetailManager_WPF.ViewModels
         {
             var existing = Cart.FirstOrDefault(i => i.Product == Product);
             if (existing == null)
-                Cart.Add(new CartItem { Product = Product, Qty = Qty });
+            {
+                //Cart.Add(new CartItem { Product = Product, Qty = Qty });
+                Cart.Add(new CartItemVM { Product = Product, Qty = Qty });
+            }
             else
             {
                 existing.Qty += Qty;
-                Cart.Remove(existing);
-                Cart.Add(existing);
+                //Cart.Remove(existing);
+                //Cart.Add(existing);
             }
 
             Product.Qty -= Qty;
@@ -118,6 +132,10 @@ namespace TimCoRetailManager_WPF.ViewModels
 
 
         // LIFECYCLE
-        protected override async void OnViewLoaded(object view) => Products = new BindingList<Product>(await _productService.GetAllAsync());
+        protected override async void OnViewLoaded(object view)
+        {
+            //Products = new BindingList<Product>(await _productService.GetAllAsync());
+            Products = new BindingList<ProductVM>(_mapper.Map<List<ProductVM>>(await _productService.GetAllAsync()));
+        }
     }
 }

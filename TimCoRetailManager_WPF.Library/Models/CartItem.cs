@@ -11,6 +11,6 @@ namespace TimCoRetailManager_WPF.Library.Models
         public Product Product { get; set; }
         public int Qty { get; set; }
 
-        public string DisplayText => $"{Product.Name} ({Qty})";
+        //public string DisplayText => $"{Product.Name} ({Qty})";
     }
 }
