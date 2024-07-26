@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TimCoRetailManager_WPF.EventModels;
+using TimCoRetailManager_WPF.Library.Models;
 using TimCoRetailManager_WPF.Services;
 
 namespace TimCoRetailManager_WPF.ViewModels
@@ -19,13 +20,16 @@ namespace TimCoRetailManager_WPF.ViewModels
         //private LoginViewModel _loginViewModel;
         private readonly SalesViewModel _salesViewModel;
 
-        public ShellViewModel(ITestDI testDI, IEventAggregator events, /*SimpleContainer container, LoginViewModel loginViewModel,*/ SalesViewModel salesViewModel)
+        private readonly IUser _user;
+
+        public ShellViewModel(ITestDI testDI, IEventAggregator events, /*SimpleContainer container, LoginViewModel loginViewModel,*/ SalesViewModel salesViewModel, IUser user)
         {
             //_testDI = testDI;
             _events = events;
             //_container = container;
             //_loginViewModel = loginViewModel;
             _salesViewModel = salesViewModel;
+            _user = user;
 
             _events.Subscribe(this);
 
@@ -38,6 +42,8 @@ namespace TimCoRetailManager_WPF.ViewModels
             ActivateItem(IoC.Get<LoginViewModel>());
         }
 
+        public bool LoggedIn => !string.IsNullOrWhiteSpace(_user.Token);
+
         // Handle specific event broadcasted by other view models
         public void Handle(LoginEvent message)
         {
@@ -45,6 +51,17 @@ namespace TimCoRetailManager_WPF.ViewModels
 
             // Need to replace the old login view so the original data does not show up again
             //_loginViewModel = _container.GetInstance<LoginViewModel>();
+
+            NotifyOfPropertyChange(() => LoggedIn);
         }
+
+        public void Logout()
+        {
+            _user.Logout();
+            ActivateItem(IoC.Get<LoginViewModel>());
+            NotifyOfPropertyChange(() => LoggedIn);
+        }
+
+        public void Exit() => TryClose();
     }
 }
