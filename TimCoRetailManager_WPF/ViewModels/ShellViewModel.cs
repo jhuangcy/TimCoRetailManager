@@ -58,6 +58,8 @@ namespace TimCoRetailManager_WPF.ViewModels
             NotifyOfPropertyChange(() => LoggedIn);
         }
 
+        public void UsersAdmin() => ActivateItem(IoC.Get<UsersViewModel>());
+
         public void Logout()
         {
             _user.Clear();

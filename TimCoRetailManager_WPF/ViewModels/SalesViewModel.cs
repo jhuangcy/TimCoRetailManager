@@ -34,6 +34,7 @@ namespace TimCoRetailManager_WPF.ViewModels
             //_messageViewModel = messageViewModel;
         }
 
+
         // PROPERTIES
         // Product model is from the lib and doesnt have events when it changes
         //private BindingList<Product> products;

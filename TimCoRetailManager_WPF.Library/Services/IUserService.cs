@@ -14,6 +14,7 @@ namespace TimCoRetailManager_WPF.Library.Services
     {
         Task<Token> GetTokenAsync(string username, string password);
         Task GetUserAsync(string token);
+        Task<List<UserDTO>> GetAllAsync();
     }
 
     public class UserService : IUserService
@@ -63,6 +64,17 @@ namespace TimCoRetailManager_WPF.Library.Services
                     _user.Token = token;
                 }
                 else 
+                    throw new Exception(res.ReasonPhrase);
+            }
+        }
+
+        public async Task<List<UserDTO>> GetAllAsync()
+        {
+            using (var res = await _api.Http.GetAsync("/api/users/get"))
+            {
+                if (res.IsSuccessStatusCode)
+                    return await res.Content.ReadAsAsync<List<UserDTO>>();
+                else
                     throw new Exception(res.ReasonPhrase);
             }
         }

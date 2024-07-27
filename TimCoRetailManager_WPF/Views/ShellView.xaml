@@ -13,15 +13,17 @@
             <MenuItem Header="_File">
                 <MenuItem x:Name="Exit" Header="E_xit"></MenuItem>
             </MenuItem>
+            <MenuItem Header="_Users">
+                <MenuItem x:Name="UsersAdmin" Header="Users _Admin"></MenuItem>
+            </MenuItem>
             <MenuItem Header="_Account" Visibility="{Binding LoggedIn, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}">
                 <!--<MenuItem x:Name="LoginScreen" Header="_Login"></MenuItem>-->
                 <MenuItem x:Name="Logout" Header="_Logout"></MenuItem>
             </MenuItem>
         </Menu>
-        
+
         <Grid>
             <ContentControl x:Name="ActiveItem" Margin="20 5 20 20"></ContentControl>
         </Grid>
     </DockPanel>
-
 </Window>

@@ -10,8 +10,8 @@ using TimCoRetailManager_API.Library.Services;
 
 namespace TimCoRetailManager_API.Controllers
 {
-    [Authorize(Roles = "Cashier")]
     //[Authorize(Roles = "Manager")]
+    [Authorize(Roles = "Cashier")]
     public class ProductsController : ApiController
     {
         // GET: api/Products/get

@@ -51,7 +51,7 @@ namespace TimCoRetailManager_WPF
                 .PerRequest<ITestDI, TestDI>()
                 .Singleton<IApi, Api>()
                 .Singleton<IConfigService, ConfigService>()
-                .Singleton<IUserService, UserService>()
+                .PerRequest<IUserService, UserService>()
                 .PerRequest<IProductService, ProductService>()
                 .PerRequest<ISaleService, SaleService>()
 
@@ -66,6 +66,7 @@ namespace TimCoRetailManager_WPF
         {
             cfg.CreateMap<Product, ProductVM>();
             cfg.CreateMap<CartItem, CartItemVM>();
+            cfg.CreateMap<UserDTO, UserVM>();
         }).CreateMapper();
     }
 }

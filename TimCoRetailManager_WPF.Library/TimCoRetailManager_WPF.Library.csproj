@@ -51,6 +51,7 @@
     <Compile Include="IApi.cs" />
     <Compile Include="Models\SaleDTO.cs" />
     <Compile Include="Models\SaleDetailDTO.cs" />
+    <Compile Include="Models\UserDTO.cs" />
     <Compile Include="Services\IConfigService.cs" />
     <Compile Include="Models\CartItem.cs" />
     <Compile Include="Models\IProduct.cs" />

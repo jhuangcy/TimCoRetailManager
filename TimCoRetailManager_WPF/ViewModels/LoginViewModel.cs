@@ -20,6 +20,7 @@ namespace TimCoRetailManager_WPF.ViewModels
             _userService = userService;
         }
 
+
         // PROPERTIES
         private string email = "john@gmail.com";
         public string Email

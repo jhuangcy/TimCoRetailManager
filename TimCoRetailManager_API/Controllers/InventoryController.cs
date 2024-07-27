@@ -13,8 +13,8 @@ namespace TimCoRetailManager_API.Controllers
     [Authorize]
     public class InventoryController : ApiController
     {
-        [Authorize(Roles = "Manager, Admin")]
         // GET: api/Inventory/get
+        [Authorize(Roles = "Manager, Admin")]
         public async Task<List<Inventory>> Get()
         {
             IInventoryService inventoryService = new InventoryService();
@@ -28,8 +28,8 @@ namespace TimCoRetailManager_API.Controllers
             return "value";
         }
 
-        [Authorize(Roles = "Admin")]
         // POST: api/Inventory/post
+        [Authorize(Roles = "Admin")]
         public async Task Post([FromBody]Inventory inventory)
         {
             IInventoryService inventoryService = new InventoryService();

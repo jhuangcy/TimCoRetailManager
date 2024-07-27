@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using TimCoRetailManager_API.Library.Models;
 using TimCoRetailManager_API.Library.Services;
+using TimCoRetailManager_API.Models;
 
 // WebApiConfig was edited to allow action names
 namespace TimCoRetailManager_API.Controllers
@@ -15,10 +17,32 @@ namespace TimCoRetailManager_API.Controllers
     [Authorize]
     public class UsersController : ApiController
     {
-        // GET: api/Users
-        public IEnumerable<string> Get()
+        // GET: api/Users/get
+        [Authorize(Roles = "Admin")]
+        public List<UserDTO> Get()
         {
-            return new string[] { "value1", "value2" };
+            var userDtos = new List<UserDTO>();
+
+            using (var context = new ApplicationDbContext())
+            {
+                var userStore = new UserStore<ApplicationUser>(context);
+                var userManager = new UserManager<ApplicationUser>(userStore);
+
+                var users = userManager.Users.ToList();
+                var roles = context.Roles.ToList();
+
+                foreach (var user in users)
+                {
+                    var userDto = new UserDTO() { Id = user.Id, Email = user.Email };
+                    foreach (var role in user.Roles)
+                    {
+                        userDto.Roles.Add(role.RoleId, roles.Find(r => r.Id == role.RoleId).Name);
+                    }
+                    userDtos.Add(userDto);
+                }
+            }
+
+            return userDtos;
         }
 
         // GET: api/Users/5
