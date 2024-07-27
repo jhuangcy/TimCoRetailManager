@@ -3,10 +3,12 @@ using Caliburn.Micro;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Dynamic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using TimCoRetailManager_WPF.Library.Models;
 using TimCoRetailManager_WPF.Library.Services;
 using TimCoRetailManager_WPF.Models;
@@ -15,17 +17,21 @@ namespace TimCoRetailManager_WPF.ViewModels
 {
     public class SalesViewModel : Screen
     {
+        private readonly IWindowManager _windowManager;
         private readonly IMapper _mapper;
         private readonly IConfigService _configService;
         private readonly IProductService _productService;
         private readonly ISaleService _saleService;
+        //private readonly MessageViewModel _messageViewModel;
 
-        public SalesViewModel(IMapper mapper, IConfigService configService, IProductService productService, ISaleService saleService)
+        public SalesViewModel(IWindowManager windowManager, IMapper mapper, IConfigService configService, IProductService productService, ISaleService saleService/*, MessageViewModel messageViewModel */)
         {
+            _windowManager = windowManager;
             _mapper = mapper;
             _configService = configService;
             _productService = productService;
             _saleService = saleService;
+            //_messageViewModel = messageViewModel;
         }
 
         // PROPERTIES
@@ -156,7 +162,29 @@ namespace TimCoRetailManager_WPF.ViewModels
             base.OnViewLoaded(view);
             //Products = new BindingList<Product>(await _productService.GetAllAsync());
             //Products = new BindingList<ProductVM>(_mapper.Map<List<ProductVM>>(await _productService.GetAllAsync()));
-            await LoadProducts();
+
+            try
+            {
+                await LoadProducts();
+            }
+            catch (Exception ex)
+            {
+                // Use IoC to get new instance everytime instead of constructor injection
+                var _messageViewModel = IoC.Get<MessageViewModel>();
+
+                dynamic settings = new ExpandoObject();
+                settings.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+                settings.ResizeMode = ResizeMode.NoResize;
+                settings.Title = "Message Box";
+
+                if (ex.Message == "Unauthorized")
+                    _messageViewModel.Add("Unauthorized", "You do not have permission to access this resource.");
+                else
+                    _messageViewModel.Add("Error", ex.Message);
+
+                _windowManager.ShowDialog(_messageViewModel, null, settings);
+                TryClose();
+            }
         }
 
         async Task LoadProducts() => Products = new BindingList<ProductVM>(_mapper.Map<List<ProductVM>>(await _productService.GetAllAsync()));

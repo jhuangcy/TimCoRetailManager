@@ -11,6 +11,7 @@ using TimCoRetailManager_API.Library.Services;
 namespace TimCoRetailManager_API.Controllers
 {
     [Authorize(Roles = "Cashier")]
+    //[Authorize(Roles = "Manager")]
     public class ProductsController : ApiController
     {
         // GET: api/Products/get
