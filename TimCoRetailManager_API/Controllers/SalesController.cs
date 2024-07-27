@@ -20,9 +20,13 @@ namespace TimCoRetailManager_API.Controllers
             return new string[] { "value1", "value2" };
         }
 
+        [Authorize(Roles = "Admin, Manager")]
         // GET: api/Sales/getreports
         public async Task<List<SaleUserViewModel>> GetReports()
         {
+            if (RequestContext.Principal.IsInRole("Admin"))
+            { }
+
             ISaleService saleService = new SaleService();
 
             return await saleService.FindAllSalesWithUsers();
@@ -34,6 +38,7 @@ namespace TimCoRetailManager_API.Controllers
             return "value";
         }
 
+        [Authorize(Roles = "Cashier")]
         // POST: api/Sales/post
         public async Task Post([FromBody]SaleDTO sale)
         {
