@@ -15,6 +15,9 @@ namespace TimCoRetailManager_WPF.Library.Services
         Task<Token> GetTokenAsync(string username, string password);
         Task GetUserAsync(string token);
         Task<List<UserDTO>> GetAllAsync();
+        Task<Dictionary<string, string>> GetAllRolesAsync();
+        Task AddRoleToUser(string userId, string role);
+        Task RemoveRoleFromUser(string userId, string role);
     }
 
     public class UserService : IUserService
@@ -75,6 +78,35 @@ namespace TimCoRetailManager_WPF.Library.Services
                 if (res.IsSuccessStatusCode)
                     return await res.Content.ReadAsAsync<List<UserDTO>>();
                 else
+                    throw new Exception(res.ReasonPhrase);
+            }
+        }
+
+        public async Task<Dictionary<string, string>> GetAllRolesAsync()
+        {
+            using (var res = await _api.Http.GetAsync("/api/users/getroles"))
+            {
+                if (res.IsSuccessStatusCode)
+                    return await res.Content.ReadAsAsync<Dictionary<string, string>>();
+                else
+                    throw new Exception(res.ReasonPhrase);
+            }
+        }
+
+        public async Task AddRoleToUser(string userId, string role)
+        {
+            using (var res = await _api.Http.PostAsJsonAsync("/api/users/addrole", new { userId, role }))
+            {
+                if (!res.IsSuccessStatusCode)
+                    throw new Exception(res.ReasonPhrase);
+            }
+        }
+
+        public async Task RemoveRoleFromUser(string userId, string role)
+        {
+            using (var res = await _api.Http.PostAsJsonAsync("/api/users/removerole", new { userId, role }))
+            {
+                if (!res.IsSuccessStatusCode)
                     throw new Exception(res.ReasonPhrase);
             }
         }

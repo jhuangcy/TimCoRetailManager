@@ -45,6 +45,16 @@ namespace TimCoRetailManager_API.Controllers
             return userDtos;
         }
 
+        // GET: api/Users/getroles
+        [Authorize(Roles = "Admin")]
+        public Dictionary<string, string> GetRoles()
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                return context.Roles.ToDictionary(r => r.Id, r => r.Name);
+            }
+        }
+
         // GET: api/Users/5
         public string Get(int id)
         {
@@ -65,6 +75,19 @@ namespace TimCoRetailManager_API.Controllers
         {
         }
 
+        // POST: api/Users/addrole
+        [Authorize(Roles = "Admin")]
+        public async Task AddRole(UserRole userRole)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var userStore = new UserStore<ApplicationUser>(context);
+                var userManager = new UserManager<ApplicationUser>(userStore);
+
+                await userManager.AddToRoleAsync(userRole.UserId, userRole.Role);
+            }
+        }
+
         // PUT: api/Users/5
         public void Put(int id, [FromBody]string value)
         {
@@ -73,6 +96,19 @@ namespace TimCoRetailManager_API.Controllers
         // DELETE: api/Users/5
         public void Delete(int id)
         {
+        }
+
+        // DELETE: api/Users/removerole
+        [Authorize(Roles = "Admin")]
+        public async Task RemoveRole(UserRole userRole)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var userStore = new UserStore<ApplicationUser>(context);
+                var userManager = new UserManager<ApplicationUser>(userStore);
+
+                await userManager.RemoveFromRoleAsync(userRole.UserId, userRole.Role);
+            }
         }
     }
 }

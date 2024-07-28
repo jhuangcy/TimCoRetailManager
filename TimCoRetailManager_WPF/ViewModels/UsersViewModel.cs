@@ -36,6 +36,73 @@ namespace TimCoRetailManager_WPF.ViewModels
             set { users = value; NotifyOfPropertyChange(() => Users); }
         }
 
+        private UserVM user;
+        public UserVM User
+        {
+            get { return user; }
+            set { 
+                user = value;
+                Email = value.Email;
+                UserRoles.Clear();
+                UserRoles = new BindingList<string>(value.Roles.Select(r => r.Value).ToList());
+                _ = LoadRoles();
+                NotifyOfPropertyChange(() => User); 
+            }
+        }
+
+        private string email;
+        public string Email
+        {
+            get { return email; }
+            set { email = value; NotifyOfPropertyChange(() => Email); }
+        }
+
+        private BindingList<string> userRoles = new BindingList<string>();
+        public BindingList<string> UserRoles
+        {
+            get { return userRoles; }
+            set { userRoles = value; NotifyOfPropertyChange(() => UserRoles); }
+        }
+
+        private string userRole;
+        public string UserRole
+        {
+            get { return userRole; }
+            set { userRole = value; NotifyOfPropertyChange(() => UserRole); }
+        }
+
+        private BindingList<string> roles = new BindingList<string>();
+        public BindingList<string> Roles
+        {
+            get { return roles; }
+            set { roles = value; NotifyOfPropertyChange(() => Roles); }
+        }
+
+        private string role;
+        public string Role
+        {
+            get { return role; }
+            set { role = value; NotifyOfPropertyChange(() => Role); }
+        }
+
+
+        // COMMANDS
+        public bool CanAddRole => true;
+        public async Task AddRole()
+        {
+            await _userService.AddRoleToUser(User.Id, Role);
+            UserRoles.Add(Role);
+            Roles.Remove(Role);
+        }
+
+        public bool CanRemoveRole => true;
+        public async Task RemoveRole()
+        {
+            await _userService.RemoveRoleFromUser(User.Id, UserRole);
+            Roles.Add(UserRole);
+            UserRoles.Remove(UserRole);
+        }
+
 
         // PRIVATE
         protected override async void OnViewLoaded(object view)
@@ -67,5 +134,13 @@ namespace TimCoRetailManager_WPF.ViewModels
         }
 
         async Task LoadUsers() => Users = new BindingList<UserVM>(_mapper.Map<List<UserVM>>(await _userService.GetAllAsync()));
+
+        async Task LoadRoles()
+        {
+            var roles = await _userService.GetAllRolesAsync();
+            foreach (var role in roles)
+                if (UserRoles.IndexOf(role.Value) < 0)
+                    Roles.Add(role.Value);
+        }
     }
 }
