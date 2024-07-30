@@ -9,9 +9,11 @@ Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "TimCoRetailManager_DB", "Ti
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimCoRetailManager_WPF", "TimCoRetailManager_WPF\TimCoRetailManager_WPF.csproj", "{42731B86-ADD3-423B-84DF-C0E5452DCBD4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimCoRetailManager_API.Library", "TimCoRetailManager_API.Library\TimCoRetailManager_API.Library.csproj", "{8D900CC9-50CE-45FA-BDC1-584B54D16A56}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TimCoRetailManager_API.Library", "TimCoRetailManager_API.Library\TimCoRetailManager_API.Library.csproj", "{8D900CC9-50CE-45FA-BDC1-584B54D16A56}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimCoRetailManager_WPF.Library", "TimCoRetailManager_WPF.Library\TimCoRetailManager_WPF.Library.csproj", "{D552F532-7C4F-4A84-8346-71B2475A1C63}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TimCoRetailManager_WPF.Library", "TimCoRetailManager_WPF.Library\TimCoRetailManager_WPF.Library.csproj", "{D552F532-7C4F-4A84-8346-71B2475A1C63}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimCoRetailManager_API.3", "TimCoRetailManager_API.3\TimCoRetailManager_API.3.csproj", "{E73A1EA6-99E1-46D4-908B-04E9081372FB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,9 +22,7 @@ Global
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{B6A2FC3A-A962-4F9B-8EA2-C35474843453}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B6A2FC3A-A962-4F9B-8EA2-C35474843453}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B6A2FC3A-A962-4F9B-8EA2-C35474843453}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B6A2FC3A-A962-4F9B-8EA2-C35474843453}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E30BEC20-C35C-4E2A-91DA-9EF580D9B611}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E30BEC20-C35C-4E2A-91DA-9EF580D9B611}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E30BEC20-C35C-4E2A-91DA-9EF580D9B611}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
@@ -41,6 +41,10 @@ Global
 		{D552F532-7C4F-4A84-8346-71B2475A1C63}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D552F532-7C4F-4A84-8346-71B2475A1C63}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D552F532-7C4F-4A84-8346-71B2475A1C63}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E73A1EA6-99E1-46D4-908B-04E9081372FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E73A1EA6-99E1-46D4-908B-04E9081372FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E73A1EA6-99E1-46D4-908B-04E9081372FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E73A1EA6-99E1-46D4-908B-04E9081372FB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
