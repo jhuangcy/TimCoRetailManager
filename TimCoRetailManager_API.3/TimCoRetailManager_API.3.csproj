@@ -14,4 +14,8 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.31" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\TimCoRetailManager_API.Library\TimCoRetailManager_API.Library.csproj" />
+  </ItemGroup>
+
 </Project>

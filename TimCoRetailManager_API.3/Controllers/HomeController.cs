@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -12,10 +13,14 @@ namespace TimCoRetailManager_API._3.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, RoleManager<IdentityRole> roleManager, UserManager<IdentityUser> userManager)
         {
             _logger = logger;
+            _roleManager = roleManager;
+            _userManager = userManager;
         }
 
         public IActionResult Index()
@@ -23,8 +28,21 @@ namespace TimCoRetailManager_API._3.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        // This is used to seed data
+        public async Task<IActionResult> Privacy()
         {
+            //string[] roles = { "Admin", "Manager", "Cashier" };
+            //foreach (var role in roles)
+            //{
+            //    var exist = await _roleManager.RoleExistsAsync(role);
+            //    if (!exist)
+            //        await _roleManager.CreateAsync(new IdentityRole(role));
+            //}
+
+            //var user = await _userManager.FindByEmailAsync("john@gmail.com");
+            //if (user != null)
+            //    await _userManager.AddToRolesAsync(user, roles.Where(r => r != "Manager"));
+
             return View();
         }
 
