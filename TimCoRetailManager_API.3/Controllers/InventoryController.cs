@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,12 +16,19 @@ namespace TimCoRetailManager_API._3.Controllers
     [ApiController]
     public class InventoryController : ControllerBase
     {
+        private readonly IConfiguration _config;
+
+        public InventoryController(IConfiguration config)
+        {
+            _config = config;
+        }
+
         // GET: api/Inventory/get
         [HttpGet]
         [Authorize(Roles = "Manager, Admin")]
         public async Task<List<Inventory>> Get()
         {
-            IInventoryService inventoryService = new InventoryService();
+            IInventoryService inventoryService = new InventoryService(_config);
 
             return await inventoryService.FindAll();
         }
@@ -37,7 +45,7 @@ namespace TimCoRetailManager_API._3.Controllers
         [Authorize(Roles = "Admin")]
         public async Task Post([FromBody] Inventory inventory)
         {
-            IInventoryService inventoryService = new InventoryService();
+            IInventoryService inventoryService = new InventoryService(_config);
 
             await inventoryService.InsertOne(inventory);
         }

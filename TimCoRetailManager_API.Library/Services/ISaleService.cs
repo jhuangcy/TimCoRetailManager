@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,11 +16,18 @@ namespace TimCoRetailManager_API.Library.Services
 
     public class SaleService : ISaleService
     {
+        private readonly IConfiguration _config;
+
+        public SaleService(IConfiguration config)
+        {
+            _config = config;
+        }
+
         public async Task InsertOne(SaleDTO saleDto, string userId)
         {
             //IDb db = new Db();
 
-            IProductService productService = new ProductService();
+            IProductService productService = new ProductService(_config);
             IConfigService configService = new ConfigService();
             var tax = configService.GetTax();
 
@@ -61,7 +69,7 @@ namespace TimCoRetailManager_API.Library.Services
             */
 
             // Using a transaction instead
-            using (IDb db = new Db())
+            using (IDb db = new Db(_config))
             {
                 try
                 {
@@ -87,7 +95,7 @@ namespace TimCoRetailManager_API.Library.Services
 
         public async Task<List<SaleUserViewModel>> FindAllSalesWithUsers()
         {
-            IDb db = new Db();
+            IDb db = new Db(_config);
 
             return await db.LoadAsync<SaleUserViewModel, dynamic>("dbo.sp_GetSalesWithUsers", new { }, "TimCoRetailManager_DB");
         }

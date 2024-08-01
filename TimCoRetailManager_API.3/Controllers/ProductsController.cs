@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,11 +17,18 @@ namespace TimCoRetailManager_API._3.Controllers
     [Authorize(Roles = "Cashier")]
     public class ProductsController : ControllerBase
     {
+        private readonly IConfiguration _config;
+
+        public ProductsController(IConfiguration config)
+        {
+            _config = config;
+        }
+
         // GET: api/Products/get
         [HttpGet]
         public async Task<List<Product>> Get()
         {
-            IProductService productService = new ProductService();
+            IProductService productService = new ProductService(_config);
 
             return await productService.FindAll();
         }

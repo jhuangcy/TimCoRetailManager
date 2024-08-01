@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -27,8 +28,18 @@ namespace TimCoRetailManager_API.Library
         IDbConnection _con;
         IDbTransaction _trx;
         bool closed = false;
+        private readonly IConfiguration _config;
 
-        string GetConString(string name) => ConfigurationManager.ConnectionStrings[name].ConnectionString;
+        public Db(IConfiguration config)
+        {
+            _config = config;
+        }
+
+        string GetConString(string name)
+        {
+            //return ConfigurationManager.ConnectionStrings[name].ConnectionString;
+            return _config.GetConnectionString(name);
+        }
 
         public async Task<List<T>> LoadAsync<T, U>(string sp, U p, string name)
         {

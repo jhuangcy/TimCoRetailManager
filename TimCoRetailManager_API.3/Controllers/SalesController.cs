@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,13 @@ namespace TimCoRetailManager_API._3.Controllers
     [Authorize]
     public class SalesController : ControllerBase
     {
+        private readonly IConfiguration _config;
+
+        public SalesController(IConfiguration config)
+        {
+            _config = config;
+        }
+
         // GET: api/<SalesController>
         [HttpGet]
         public IEnumerable<string> Get()
@@ -32,7 +40,7 @@ namespace TimCoRetailManager_API._3.Controllers
             //if (RequestContext.Principal.IsInRole("Admin")) { }
             if (User.IsInRole("Admin")) { }
 
-            ISaleService saleService = new SaleService();
+            ISaleService saleService = new SaleService(_config);
 
             return await saleService.FindAllSalesWithUsers();
         }
@@ -49,7 +57,7 @@ namespace TimCoRetailManager_API._3.Controllers
         [Authorize(Roles = "Cashier")]
         public async Task Post([FromBody] SaleDTO sale)
         {
-            ISaleService saleService = new SaleService();
+            ISaleService saleService = new SaleService(_config);
 
             //var id = RequestContext.Principal.Identity.GetUserId();
             var id = User.FindFirstValue(ClaimTypes.NameIdentifier);

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,11 +23,13 @@ namespace TimCoRetailManager_API._3.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly IConfiguration _config;
 
-        public UsersController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
+        public UsersController(ApplicationDbContext context, UserManager<IdentityUser> userManager, IConfiguration config)
         {
             _context = context;
             _userManager = userManager;
+            _config = config;
         }
 
         // GET: api/Users/get
@@ -80,7 +83,7 @@ namespace TimCoRetailManager_API._3.Controllers
         [HttpGet]
         public async Task<User> GetOne()
         {
-            IUserService userService = new UserService();
+            IUserService userService = new UserService(_config);
 
             //var id = RequestContext.Principal.Identity.GetUserId();
             var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
