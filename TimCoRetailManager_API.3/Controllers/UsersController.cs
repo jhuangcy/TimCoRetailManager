@@ -16,7 +16,7 @@ using TimCoRetailManager_API.Models;
 
 namespace TimCoRetailManager_API._3.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     [Authorize]
     public class UsersController : ControllerBase
