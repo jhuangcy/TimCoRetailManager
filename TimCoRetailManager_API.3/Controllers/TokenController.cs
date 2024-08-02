@@ -59,6 +59,7 @@ namespace TimCoRetailManager_API._3.Controllers
             foreach (var role in roles)
                 claims.Add(new Claim(ClaimTypes.Role, role.Name));
 
+            // https://stackoverflow.com/questions/52153459/what-should-be-the-key-length-in-signingcredentials-jwt-asp-net-core
             var token = new JwtSecurityToken(
                 new JwtHeader(
                     new SigningCredentials(

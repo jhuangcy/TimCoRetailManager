@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -55,6 +56,12 @@ namespace TimCoRetailManager_API._3
                     ClockSkew = TimeSpan.FromMinutes(5)
                 };
             });
+
+            // Swagger setup
+            services.AddSwaggerGen(setup =>
+            {
+                setup.SwaggerDoc("v1", new OpenApiInfo { Title = "TimCo Retail Manager Api", Version = "v1" });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -78,6 +85,10 @@ namespace TimCoRetailManager_API._3
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            // Use Swagger
+            app.UseSwagger();
+            app.UseSwaggerUI(s => s.SwaggerEndpoint("/swagger/v1/swagger.json", "TimCo Api v1"));
 
             app.UseEndpoints(endpoints =>
             {
