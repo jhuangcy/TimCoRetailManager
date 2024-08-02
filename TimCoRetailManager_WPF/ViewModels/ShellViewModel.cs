@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using TimCoRetailManager_WPF.EventModels;
 using TimCoRetailManager_WPF.Library;
@@ -34,7 +35,8 @@ namespace TimCoRetailManager_WPF.ViewModels
             _salesViewModel = salesViewModel;
             _user = user;
 
-            _events.Subscribe(this);
+            //_events.Subscribe(this);
+            _events.SubscribeOnPublishedThread(this);
 
             //ActivateItem(_loginViewModel);
 
@@ -42,13 +44,13 @@ namespace TimCoRetailManager_WPF.ViewModels
             //ActivateItem(_container.GetInstance<LoginViewModel>());
 
             // Instead of passing container in
-            ActivateItem(IoC.Get<LoginViewModel>());
+            ActivateItemAsync(IoC.Get<LoginViewModel>());
         }
 
         public bool LoggedIn => !string.IsNullOrWhiteSpace(_user.Token);
 
         // Handle specific event broadcasted by other view models
-        public void Handle(LoginEvent message)
+        /* public void Handle(LoginEvent message)
         {
             ActivateItem(_salesViewModel);  // will auto close the previous view
 
@@ -56,18 +58,24 @@ namespace TimCoRetailManager_WPF.ViewModels
             //_loginViewModel = _container.GetInstance<LoginViewModel>();
 
             NotifyOfPropertyChange(() => LoggedIn);
-        }
+        } */
 
-        public void UsersAdmin() => ActivateItem(IoC.Get<UsersViewModel>());
-
-        public void Logout()
+        public async Task HandleAsync(LoginEvent message, CancellationToken cancellationToken)
         {
-            _user.Clear();
-            _api.ClearHeaders();
-            ActivateItem(IoC.Get<LoginViewModel>());
+            await ActivateItemAsync(_salesViewModel, cancellationToken);
             NotifyOfPropertyChange(() => LoggedIn);
         }
 
-        public void Exit() => TryClose();
+        public async Task UsersAdmin() => await ActivateItemAsync(IoC.Get<UsersViewModel>());
+
+        public async Task Logout()
+        {
+            _user.Clear();
+            _api.ClearHeaders();
+            await ActivateItemAsync(IoC.Get<LoginViewModel>());
+            NotifyOfPropertyChange(() => LoggedIn);
+        }
+
+        public async Task Exit() => await TryCloseAsync();
     }
 }

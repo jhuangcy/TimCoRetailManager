@@ -183,8 +183,8 @@ namespace TimCoRetailManager_WPF.ViewModels
                 else
                     _messageViewModel.Add("Error", ex.Message);
 
-                _windowManager.ShowDialog(_messageViewModel, null, settings);
-                TryClose();
+                await _windowManager.ShowDialogAsync(_messageViewModel, null, settings);
+                await TryCloseAsync();
             }
         }
 

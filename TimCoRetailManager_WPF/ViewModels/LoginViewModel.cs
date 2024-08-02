@@ -61,7 +61,7 @@ namespace TimCoRetailManager_WPF.ViewModels
                 var token = await _userService.GetTokenAsync(Email, Password);
                 await _userService.GetUserAsync(token.access_token);
 
-                _events.PublishOnUIThread(new LoginEvent());    // raise event
+                await _events.PublishOnUIThreadAsync(new LoginEvent());    // raise event
             }
             catch (Exception ex)
             {

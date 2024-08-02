@@ -21,9 +21,9 @@ namespace TimCoRetailManager_WPF.ViewModels
             NotifyOfPropertyChange(() => Message);
         }
 
-        public void Close()
+        public async Task Close()
         {
-            TryClose();
+            await TryCloseAsync();
         }
     }
 }
