@@ -15,6 +15,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TimCoRetailManager_API._3.Data;
+using TimCoRetailManager_API.Library;
+using TimCoRetailManager_API.Library.Services;
 
 namespace TimCoRetailManager_API._3
 {
@@ -38,6 +40,14 @@ namespace TimCoRetailManager_API._3
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            // Dependency injection
+            services.AddTransient<IDb, Db>();
+            services.AddSingleton<IConfigService, ConfigService>();
+            services.AddTransient<IInventoryService, InventoryService>();
+            services.AddTransient<IProductService, ProductService>();
+            services.AddTransient<ISaleService, SaleService>();
+            services.AddTransient<IUserService, UserService>();
 
             // Using jwt auth
             services.AddAuthentication(options =>

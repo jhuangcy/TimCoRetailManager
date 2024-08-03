@@ -15,19 +15,21 @@ namespace TimCoRetailManager_API.Library.Services
 
     public class UserService : IUserService
     {
-        private readonly IConfiguration _config;
+        //private readonly IConfiguration _config;
+        private readonly IDb _db;
 
-        public UserService(IConfiguration config)
+        public UserService(/*IConfiguration config,*/ IDb db)
         {
-            _config = config;
+            //_config = config;
+            _db = db;
         }
 
         public async Task<User> FindOneAsync(string Id)
         {
-            IDb db = new Db(_config);
+            //IDb db = new Db(_config);
 
             var p = new { Id };
-            return (await db.LoadAsync<User, dynamic>("dbo.sp_GetUser", p, "TimCoRetailManager_DB")).FirstOrDefault();
+            return (await _db.LoadAsync<User, dynamic>("dbo.sp_GetUser", p, "TimCoRetailManager_DB")).FirstOrDefault();
         }
     }
 }

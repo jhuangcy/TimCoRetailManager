@@ -16,25 +16,25 @@ namespace TimCoRetailManager_API.Library.Services
 
     public class InventoryService : IInventoryService
     {
-        private readonly IConfiguration _config;
+        //private readonly IConfiguration _config;
+        private readonly IDb _db;
 
-        public InventoryService(IConfiguration config)
+        public InventoryService(/*IConfiguration config,*/ IDb db)
         {
-            _config = config;
+            //_config = config;
+            _db = db;
         }
 
         public async Task<List<Inventory>> FindAll()
         {
-            IDb db = new Db(_config);
-
-            return await db.LoadAsync<Inventory, dynamic>("dbo.sp_GetAllInventory", new { }, "TimCoRetailManager_DB");
+            //IDb db = new Db(_config);
+            return await _db.LoadAsync<Inventory, dynamic>("dbo.sp_GetAllInventory", new { }, "TimCoRetailManager_DB");
         }
 
         public async Task InsertOne(Inventory inventory)
         {
-            IDb db = new Db(_config);
-
-            await db.SaveAsync("dbo.sp_AddInventory", inventory, "TimCoRetailManager_DB");
+            //IDb db = new Db(_config);
+            await _db.SaveAsync("dbo.sp_AddInventory", inventory, "TimCoRetailManager_DB");
         }
     }
 }

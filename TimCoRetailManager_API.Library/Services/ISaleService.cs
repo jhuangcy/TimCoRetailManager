@@ -16,20 +16,26 @@ namespace TimCoRetailManager_API.Library.Services
 
     public class SaleService : ISaleService
     {
-        private readonly IConfiguration _config;
+        //private readonly IConfiguration _config;
+        private readonly IDb _db;
+        private readonly IConfigService _configService;
+        private readonly IProductService _productService;
 
-        public SaleService(IConfiguration config)
+        public SaleService(/*IConfiguration config,*/ IDb db, IConfigService configService, IProductService productService)
         {
-            _config = config;
+            //_config = config;
+            _db = db;
+            _configService = configService;
+            _productService = productService;
         }
 
         public async Task InsertOne(SaleDTO saleDto, string userId)
         {
             //IDb db = new Db();
 
-            IProductService productService = new ProductService(_config);
-            IConfigService configService = new ConfigService();
-            var tax = configService.GetTax();
+            //IProductService productService = new ProductService(_config);
+            //IConfigService configService = new ConfigService();
+            var tax = _configService.GetTax();
 
             // Create sale details
             var details = new List<SaleDetail>();
@@ -37,7 +43,7 @@ namespace TimCoRetailManager_API.Library.Services
             {
                 var detail = new SaleDetail { ProductId = d.ProductId, Qty = d.Qty };
 
-                var product = await productService.FindOne(d.ProductId);
+                var product = await _productService.FindOne(d.ProductId);
                 if (product == null)
                     throw new Exception("Product not found");
 
@@ -69,35 +75,31 @@ namespace TimCoRetailManager_API.Library.Services
             */
 
             // Using a transaction instead
-            using (IDb db = new Db(_config))
+            try
             {
-                try
-                {
-                    db.StartTransact("TimCoRetailManager_DB");
+                _db.StartTransact("TimCoRetailManager_DB");
 
-                    await db.SaveTransactAsync("dbo.sp_AddSale", sale);
-                    var saleId = (await db.LoadTransactAsync<int, dynamic>("sp_GetSale", new { sale.UserId, sale.SaleDate })).FirstOrDefault();
-                    foreach (var d in details)
-                    {
-                        d.SaleId = saleId;
-                        await db.SaveTransactAsync("dbo.sp_AddSaleDetail", d);
-                    }
-
-                    db.Commit();
-                }
-                catch (Exception)
+                await _db.SaveTransactAsync("dbo.sp_AddSale", sale);
+                var saleId = (await _db.LoadTransactAsync<int, dynamic>("sp_GetSale", new { sale.UserId, sale.SaleDate })).FirstOrDefault();
+                foreach (var d in details)
                 {
-                    db.Rollback();
-                    throw;
+                    d.SaleId = saleId;
+                    await _db.SaveTransactAsync("dbo.sp_AddSaleDetail", d);
                 }
+
+                _db.Commit();
+            }
+            catch (Exception)
+            {
+                _db.Rollback();
+                throw;
             }
         }
 
         public async Task<List<SaleUserViewModel>> FindAllSalesWithUsers()
         {
-            IDb db = new Db(_config);
-
-            return await db.LoadAsync<SaleUserViewModel, dynamic>("dbo.sp_GetSalesWithUsers", new { }, "TimCoRetailManager_DB");
+            //IDb db = new Db(_config);
+            return await _db.LoadAsync<SaleUserViewModel, dynamic>("dbo.sp_GetSalesWithUsers", new { }, "TimCoRetailManager_DB");
         }
     }
 }

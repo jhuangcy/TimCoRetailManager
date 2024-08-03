@@ -18,11 +18,13 @@ namespace TimCoRetailManager_API._3.Controllers
     [Authorize]
     public class SalesController : ControllerBase
     {
-        private readonly IConfiguration _config;
+        //private readonly IConfiguration _config;
+        private readonly ISaleService _saleService;
 
-        public SalesController(IConfiguration config)
+        public SalesController(/*IConfiguration config,*/ ISaleService saleService)
         {
-            _config = config;
+            //_config = config;
+            _saleService = saleService;
         }
 
         // GET: api/<SalesController>
@@ -40,9 +42,8 @@ namespace TimCoRetailManager_API._3.Controllers
             //if (RequestContext.Principal.IsInRole("Admin")) { }
             if (User.IsInRole("Admin")) { }
 
-            ISaleService saleService = new SaleService(_config);
-
-            return await saleService.FindAllSalesWithUsers();
+            //ISaleService saleService = new SaleService(_config);
+            return await _saleService.FindAllSalesWithUsers();
         }
 
         // GET api/<SalesController>/5
@@ -57,11 +58,11 @@ namespace TimCoRetailManager_API._3.Controllers
         [Authorize(Roles = "Cashier")]
         public async Task Post([FromBody] SaleDTO sale)
         {
-            ISaleService saleService = new SaleService(_config);
+            //ISaleService saleService = new SaleService(_config);
 
             //var id = RequestContext.Principal.Identity.GetUserId();
             var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            await saleService.InsertOne(sale, id);
+            await _saleService.InsertOne(sale, id);
         }
 
         // PUT api/<SalesController>/5

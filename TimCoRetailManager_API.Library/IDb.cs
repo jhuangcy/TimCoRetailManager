@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace TimCoRetailManager_API.Library
 {
-    internal interface IDb : IDisposable
+    public interface IDb : IDisposable
     {
         Task<List<T>> LoadAsync<T, U>(string sp, U p, string name);
         Task SaveAsync<U>(string sp, U p, string name);
@@ -23,7 +23,7 @@ namespace TimCoRetailManager_API.Library
         Task SaveTransactAsync<U>(string sp, U p);
     }
 
-    class Db : IDb
+    public class Db : IDb, IDisposable
     {
         IDbConnection _con;
         IDbTransaction _trx;

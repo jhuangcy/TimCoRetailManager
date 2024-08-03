@@ -23,13 +23,15 @@ namespace TimCoRetailManager_API._3.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
-        private readonly IConfiguration _config;
+        //private readonly IConfiguration _config;
+        private readonly IUserService _userService;
 
-        public UsersController(ApplicationDbContext context, UserManager<IdentityUser> userManager, IConfiguration config)
+        public UsersController(ApplicationDbContext context, UserManager<IdentityUser> userManager, /*IConfiguration config,*/ IUserService userService)
         {
             _context = context;
             _userManager = userManager;
-            _config = config;
+            //_config = config;
+            _userService = userService;
         }
 
         // GET: api/Users/get
@@ -83,11 +85,11 @@ namespace TimCoRetailManager_API._3.Controllers
         [HttpGet]
         public async Task<User> GetOne()
         {
-            IUserService userService = new UserService(_config);
+            //IUserService userService = new UserService(_config);
 
             //var id = RequestContext.Principal.Identity.GetUserId();
             var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            return await userService.FindOneAsync(id);
+            return await _userService.FindOneAsync(id);
         }
 
         // POST api/<UsersController>

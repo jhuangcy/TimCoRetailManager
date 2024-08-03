@@ -16,11 +16,13 @@ namespace TimCoRetailManager_API._3.Controllers
     [ApiController]
     public class InventoryController : ControllerBase
     {
-        private readonly IConfiguration _config;
+        //private readonly IConfiguration _config;
+        private readonly IInventoryService _inventoryService;
 
-        public InventoryController(IConfiguration config)
+        public InventoryController(/*IConfiguration config,*/ IInventoryService inventoryService)
         {
-            _config = config;
+            //_config = config;
+            _inventoryService = inventoryService;
         }
 
         // GET: api/Inventory/get
@@ -28,9 +30,8 @@ namespace TimCoRetailManager_API._3.Controllers
         [Authorize(Roles = "Manager, Admin")]
         public async Task<List<Inventory>> Get()
         {
-            IInventoryService inventoryService = new InventoryService(_config);
-
-            return await inventoryService.FindAll();
+            //IInventoryService inventoryService = new InventoryService(_config);
+            return await _inventoryService.FindAll();
         }
 
         // GET api/<InventoryController>/5
@@ -45,9 +46,8 @@ namespace TimCoRetailManager_API._3.Controllers
         [Authorize(Roles = "Admin")]
         public async Task Post([FromBody] Inventory inventory)
         {
-            IInventoryService inventoryService = new InventoryService(_config);
-
-            await inventoryService.InsertOne(inventory);
+            //IInventoryService inventoryService = new InventoryService(_config);
+            await _inventoryService.InsertOne(inventory);
         }
 
         // PUT api/<InventoryController>/5

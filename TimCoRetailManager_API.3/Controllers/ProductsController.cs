@@ -17,20 +17,21 @@ namespace TimCoRetailManager_API._3.Controllers
     [Authorize(Roles = "Cashier")]
     public class ProductsController : ControllerBase
     {
-        private readonly IConfiguration _config;
+        //private readonly IConfiguration _config;
+        private readonly IProductService _productService;
 
-        public ProductsController(IConfiguration config)
+        public ProductsController(/*IConfiguration config,*/ IProductService productService)
         {
-            _config = config;
+            //_config = config;
+            _productService = productService;
         }
 
         // GET: api/Products/get
         [HttpGet]
         public async Task<List<Product>> Get()
         {
-            IProductService productService = new ProductService(_config);
-
-            return await productService.FindAll();
+            //IProductService productService = new ProductService(_config);
+            return await _productService.FindAll();
         }
 
         // GET api/<ProductsController>/5
