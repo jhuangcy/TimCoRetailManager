@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -29,10 +30,12 @@ namespace TimCoRetailManager_API.Library
         IDbTransaction _trx;
         bool closed = false;
         private readonly IConfiguration _config;
+        private readonly ILogger<IDb> _logger;
 
-        public Db(IConfiguration config)
+        public Db(IConfiguration config, ILogger<IDb> logger)
         {
             _config = config;
+            _logger = logger;
         }
 
         string GetConString(string name)
@@ -94,9 +97,9 @@ namespace TimCoRetailManager_API.Library
                 {
                     Commit();
                 }
-                catch
+                catch (Exception ex)
                 {
-                    // log something
+                    _logger.LogError(ex, "Commit transaction failed in the dispose method");
                 }
             }
 

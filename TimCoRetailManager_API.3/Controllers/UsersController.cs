@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,13 +26,15 @@ namespace TimCoRetailManager_API._3.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         //private readonly IConfiguration _config;
         private readonly IUserService _userService;
+        private readonly ILogger<UsersController> _logger;
 
-        public UsersController(ApplicationDbContext context, UserManager<IdentityUser> userManager, /*IConfiguration config,*/ IUserService userService)
+        public UsersController(ApplicationDbContext context, UserManager<IdentityUser> userManager, /*IConfiguration config,*/ IUserService userService, ILogger<UsersController> logger)
         {
             _context = context;
             _userManager = userManager;
             //_config = config;
             _userService = userService;
+            _logger = logger;
         }
 
         // GET: api/Users/get
@@ -106,7 +109,11 @@ namespace TimCoRetailManager_API._3.Controllers
             //var userStore = new UserStore<ApplicationUser>(context);
             //var userManager = new UserManager<ApplicationUser>(userStore);
 
+            var id = User.FindFirstValue(ClaimTypes.NameIdentifier);    // for logging
             var user = await _userManager.FindByIdAsync(userRole.UserId);
+
+            _logger.LogInformation("Admin {Admin} added user {User} to role {Role}", id, user.Id, userRole.Role);
+
             //await _userManager.AddToRoleAsync(userRole.UserId, userRole.Role);
             await _userManager.AddToRoleAsync(user, userRole.Role);
             
@@ -132,7 +139,11 @@ namespace TimCoRetailManager_API._3.Controllers
             //var userStore = new UserStore<ApplicationUser>(context);
             //var userManager = new UserManager<ApplicationUser>(userStore);
 
+            var id = User.FindFirstValue(ClaimTypes.NameIdentifier);    // for logging
             var user = await _userManager.FindByIdAsync(userRole.UserId);
+
+            _logger.LogInformation("Admin {Admin} removed user {User} from role {Role}", id, user.Id, userRole.Role);
+
             //await _userManager.RemoveFromRoleAsync(userRole.UserId, userRole.Role);
             await _userManager.RemoveFromRoleAsync(user, userRole.Role);
         }

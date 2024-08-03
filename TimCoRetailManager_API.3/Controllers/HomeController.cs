@@ -29,7 +29,7 @@ namespace TimCoRetailManager_API._3.Controllers
         }
 
         // This is used to seed data
-        public async Task<IActionResult> Privacy()
+        public /*async Task<*/IActionResult/*>*/ Privacy()
         {
             //string[] roles = { "Admin", "Manager", "Cashier" };
             //foreach (var role in roles)
