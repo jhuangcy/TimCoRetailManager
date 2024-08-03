@@ -21,18 +21,18 @@ namespace TimCoRetailManager_WPF.ViewModels
 
         //private readonly SimpleContainer _container;
         //private LoginViewModel _loginViewModel;
-        private readonly SalesViewModel _salesViewModel;
+        //private readonly SalesViewModel _salesViewModel;
 
         private readonly IUser _user;
 
-        public ShellViewModel(ITestDI testDI, IEventAggregator events, IApi api, /*SimpleContainer container, LoginViewModel loginViewModel,*/ SalesViewModel salesViewModel, IUser user)
+        public ShellViewModel(ITestDI testDI, IEventAggregator events, IApi api, /*SimpleContainer container, LoginViewModel loginViewModel, SalesViewModel salesViewModel,*/ IUser user)
         {
             //_testDI = testDI;
             _events = events;
             _api = api;
             //_container = container;
             //_loginViewModel = loginViewModel;
-            _salesViewModel = salesViewModel;
+            //_salesViewModel = salesViewModel;
             _user = user;
 
             //_events.Subscribe(this);
@@ -62,7 +62,8 @@ namespace TimCoRetailManager_WPF.ViewModels
 
         public async Task HandleAsync(LoginEvent message, CancellationToken cancellationToken)
         {
-            await ActivateItemAsync(_salesViewModel, cancellationToken);
+            //await ActivateItemAsync(_salesViewModel, cancellationToken);
+            await ActivateItemAsync(IoC.Get<SalesViewModel>(), cancellationToken);
             NotifyOfPropertyChange(() => LoggedIn);
         }
 
