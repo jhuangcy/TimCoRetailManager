@@ -59,7 +59,8 @@ namespace TimCoRetailManager_API._3
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("secretkeyneedstobelongerthan16chars")),
+                    //IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("secretkeyneedstobelongerthan16chars")),
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration.GetValue<string>("Secrets:SecurityKey"))),
                     ValidateIssuer = false,
                     ValidateAudience = false,
                     ValidateLifetime = true,
