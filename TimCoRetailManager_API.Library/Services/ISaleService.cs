@@ -10,24 +10,27 @@ namespace TimCoRetailManager_API.Library.Services
 {
     public interface ISaleService
     {
+        decimal GetTax();
         Task InsertOne(SaleDTO saleDto, string userId);
         Task<List<SaleUserViewModel>> FindAllSalesWithUsers();
     }
 
     public class SaleService : ISaleService
     {
-        //private readonly IConfiguration _config;
+        private readonly IConfiguration _config;
         private readonly IDb _db;
-        private readonly IConfigService _configService;
+        //private readonly IConfigService _configService;
         private readonly IProductService _productService;
 
-        public SaleService(/*IConfiguration config,*/ IDb db, IConfigService configService, IProductService productService)
+        public SaleService(IConfiguration config, IDb db, /*IConfigService configService,*/ IProductService productService)
         {
-            //_config = config;
+            _config = config;
             _db = db;
-            _configService = configService;
+            //_configService = configService;
             _productService = productService;
         }
+
+        public decimal GetTax() => _config.GetValue<decimal>("tax");
 
         public async Task InsertOne(SaleDTO saleDto, string userId)
         {
@@ -35,7 +38,8 @@ namespace TimCoRetailManager_API.Library.Services
 
             //IProductService productService = new ProductService(_config);
             //IConfigService configService = new ConfigService();
-            var tax = _configService.GetTax();
+            //var tax = _configService.GetTax();
+            var tax = GetTax();
 
             // Create sale details
             var details = new List<SaleDetail>();

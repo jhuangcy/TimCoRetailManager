@@ -46,6 +46,11 @@ namespace TimCoRetailManager_API._3.Controllers
             return await _saleService.FindAllSalesWithUsers();
         }
 
+        // GET: api/Sales/gettax
+        [HttpGet]
+        [AllowAnonymous]
+        public decimal GetTax() => _saleService.GetTax();
+
         // GET api/<SalesController>/5
         [HttpGet("{id}")]
         public string Get(int id)

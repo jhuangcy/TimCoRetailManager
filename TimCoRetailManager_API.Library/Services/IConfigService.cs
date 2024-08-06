@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+// This file is now merged with the SaleService
 namespace TimCoRetailManager_API.Library.Services
 {
     public interface IConfigService
