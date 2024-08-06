@@ -48,6 +48,7 @@ namespace TimCoRetailManager_WPF.ViewModels
         }
 
         public bool LoggedIn => !string.IsNullOrWhiteSpace(_user.Token);
+        public bool LoggedOut => !LoggedIn;
 
         // Handle specific event broadcasted by other view models
         /* public void Handle(LoginEvent message)
@@ -65,6 +66,7 @@ namespace TimCoRetailManager_WPF.ViewModels
             //await ActivateItemAsync(_salesViewModel, cancellationToken);
             await ActivateItemAsync(IoC.Get<SalesViewModel>(), cancellationToken);
             NotifyOfPropertyChange(() => LoggedIn);
+            NotifyOfPropertyChange(() => LoggedOut);
         }
 
         public async Task UsersAdmin() => await ActivateItemAsync(IoC.Get<UsersViewModel>());
@@ -75,8 +77,10 @@ namespace TimCoRetailManager_WPF.ViewModels
             _api.ClearHeaders();
             await ActivateItemAsync(IoC.Get<LoginViewModel>());
             NotifyOfPropertyChange(() => LoggedIn);
+            NotifyOfPropertyChange(() => LoggedOut);
         }
 
+        public async Task Login() => await ActivateItemAsync(IoC.Get<LoginViewModel>());
         public async Task Exit() => await TryCloseAsync();
     }
 }
