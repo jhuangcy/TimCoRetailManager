@@ -43,10 +43,11 @@ namespace TimCoRetailManager_WPF.ViewModels
             set { 
                 user = value;
                 Email = value.Email;
+                Roles.Clear();
                 UserRoles.Clear();
                 UserRoles = new BindingList<string>(value.Roles.Select(r => r.Value).ToList());
                 _ = LoadRoles();
-                NotifyOfPropertyChange(() => User); 
+                NotifyOfPropertyChange(() => User);
             }
         }
 
@@ -68,7 +69,11 @@ namespace TimCoRetailManager_WPF.ViewModels
         public string UserRole
         {
             get { return userRole; }
-            set { userRole = value; NotifyOfPropertyChange(() => UserRole); }
+            set { 
+                userRole = value;
+                NotifyOfPropertyChange(() => UserRole);
+                NotifyOfPropertyChange(() => CanRemoveRole);
+            }
         }
 
         private BindingList<string> roles = new BindingList<string>();
@@ -82,24 +87,37 @@ namespace TimCoRetailManager_WPF.ViewModels
         public string Role
         {
             get { return role; }
-            set { role = value; NotifyOfPropertyChange(() => Role); }
+            set { 
+                role = value;
+                NotifyOfPropertyChange(() => Role);
+                NotifyOfPropertyChange(() => CanAddRole);
+            }
         }
 
 
         // COMMANDS
-        public bool CanAddRole => true;
+        public bool CanAddRole => User != null && !string.IsNullOrEmpty(Role);
         public async Task AddRole()
         {
             await _userService.AddRoleToUser(User.Id, Role);
             UserRoles.Add(Role);
+
+            var rand = new Random();
+            Users.First(u => u.Id == User.Id).Roles.Add(rand.Next(1000000).ToString(), Role);
+            
             Roles.Remove(Role);
         }
 
-        public bool CanRemoveRole => true;
+        public bool CanRemoveRole => User != null && !string.IsNullOrEmpty(UserRole);
         public async Task RemoveRole()
         {
             await _userService.RemoveRoleFromUser(User.Id, UserRole);
             Roles.Add(UserRole);
+
+            var u = Users.First(u => u.Id == User.Id);
+            var r = u.Roles.First(kvp => kvp.Value == UserRole);
+            u.Roles.Remove(r.Key);
+            
             UserRoles.Remove(UserRole);
         }
 
