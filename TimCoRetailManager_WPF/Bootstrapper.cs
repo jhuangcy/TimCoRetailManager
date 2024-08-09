@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using Caliburn.Micro;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -42,6 +44,9 @@ namespace TimCoRetailManager_WPF
         {
             //container.Instance(container);    // allows access to container in view models, but just use IoC
 
+            // appsettings
+            container.RegisterInstance(typeof(IConfiguration), "IConfiguration", AddConfig());
+
             // Services
             container
                 .Singleton<IWindowManager, WindowManager>()
@@ -68,5 +73,17 @@ namespace TimCoRetailManager_WPF
             cfg.CreateMap<CartItem, CartItemVM>();
             cfg.CreateMap<UserDTO, UserVM>();
         }).CreateMapper();
+
+        // To use appsettings.json
+        IConfiguration AddConfig()
+        {
+            IConfigurationBuilder builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json");
+#if DEBUG
+            builder.AddJsonFile("appsettings.Development.json", true, true);
+#else
+            builder.AddJsonFile("appsettings.json", true, true);
+#endif
+            return builder.Build();
+        }
     }
 }

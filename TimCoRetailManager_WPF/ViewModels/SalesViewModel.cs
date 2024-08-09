@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Caliburn.Micro;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -17,18 +18,20 @@ namespace TimCoRetailManager_WPF.ViewModels
 {
     public class SalesViewModel : Screen
     {
+        private readonly IConfiguration _config;
         private readonly IWindowManager _windowManager;
         private readonly IMapper _mapper;
-        private readonly IConfigService _configService;
+        //private readonly IConfigService _configService;
         private readonly IProductService _productService;
         private readonly ISaleService _saleService;
         //private readonly MessageViewModel _messageViewModel;
 
-        public SalesViewModel(IWindowManager windowManager, IMapper mapper, IConfigService configService, IProductService productService, ISaleService saleService/*, MessageViewModel messageViewModel */)
+        public SalesViewModel(IConfiguration config, IWindowManager windowManager, IMapper mapper, /*IConfigService configService,*/ IProductService productService, ISaleService saleService/*, MessageViewModel messageViewModel */)
         {
+            _config = config;
             _windowManager = windowManager;
             _mapper = mapper;
-            _configService = configService;
+            //_configService = configService;
             _productService = productService;
             _saleService = saleService;
             //_messageViewModel = messageViewModel;
@@ -97,7 +100,8 @@ namespace TimCoRetailManager_WPF.ViewModels
         //public string Subtotal => Cart.Aggregate(0m, (acc, i) => acc += i.Product.RetailPrice * i.Qty).ToString("C");
         //public string Tax => Cart.Aggregate(0m, (acc, i) => i.Product.Taxable ? acc += i.Product.RetailPrice * i.Qty * (_configService.GetTax() / 100) : acc += 0).ToString("C");
         public string Subtotal => Cart.Sum(i => i.Product.RetailPrice * i.Qty).ToString("C");
-        public string Tax => Cart.Where(i => i.Product.Taxable).Sum(i => i.Product.RetailPrice * i.Qty * (_configService.GetTax() / 100)).ToString("C");
+        //public string Tax => Cart.Where(i => i.Product.Taxable).Sum(i => i.Product.RetailPrice * i.Qty * (_configService.GetTax() / 100)).ToString("C");
+        public string Tax => Cart.Where(i => i.Product.Taxable).Sum(i => i.Product.RetailPrice * i.Qty * (_config.GetValue<decimal>("tax") / 100)).ToString("C");
 
         // https://stackoverflow.com/questions/4953037/problem-parsing-currency-text-to-decimal-type
         public string Total => (decimal.Parse(Subtotal, NumberStyles.Currency) + decimal.Parse(Tax, NumberStyles.Currency)).ToString("C");
