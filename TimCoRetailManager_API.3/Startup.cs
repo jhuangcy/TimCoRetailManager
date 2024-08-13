@@ -73,6 +73,11 @@ namespace TimCoRetailManager_API._3
             {
                 setup.SwaggerDoc("v1", new OpenApiInfo { Title = "TimCo Retail Manager Api", Version = "v1" });
             });
+
+            services.AddCors(policy =>
+            {
+                policy.AddPolicy("OpenCorsPolicy", options => options.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -91,6 +96,8 @@ namespace TimCoRetailManager_API._3
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
+            app.UseCors("OpenCorsPolicy");
 
             app.UseRouting();
 
