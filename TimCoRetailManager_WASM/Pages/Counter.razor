@@ -6,6 +6,18 @@
 
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
 
+<hr />
+<AuthorizeView Roles="Admin">
+    <Authorized>
+        <h4>
+            Username: @context.User.FindFirst(System.Security.Claims.ClaimTypes.Name).Value
+        </h4>
+    </Authorized>
+    <NotAuthorized>
+        <h4>User not authorized</h4>
+    </NotAuthorized>
+</AuthorizeView>
+
 @code {
     private int currentCount = 0;
 

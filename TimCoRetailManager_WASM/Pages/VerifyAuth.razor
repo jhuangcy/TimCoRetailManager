@@ -1,0 +1,42 @@
+﻿@page "/verify"
+
+<h3>VerifyAuth</h3>
+
+@if (isAuth)
+{
+    <h4>@username is logged in</h4>
+    <ul>
+        <li>isAdmin: @isAdmin</li>
+        <li>isManager: @isManager</li>
+        <li>isCashier: @isCashier</li>
+    </ul>
+}
+else
+{
+    <h4>User not logged in</h4>
+}
+
+@code { 
+    [CascadingParameter]
+    public Task<AuthenticationState> AuthState { get; set; }
+
+    string username;
+    bool isAuth = false;
+    bool isAdmin = false;
+    bool isManager = false;
+    bool isCashier = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthState;
+        if (authState.User.Identity.IsAuthenticated)
+        {
+            isAuth = true;
+            isAdmin = authState.User.IsInRole("Admin");
+            isManager = authState.User.IsInRole("Manager");
+            isCashier = authState.User.IsInRole("Cashier");
+
+            username = authState.User.FindFirst(System.Security.Claims.ClaimTypes.Name).Value;
+        }
+    }
+}

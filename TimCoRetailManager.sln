@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TimCoRetailManager_WPF.Libr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TimCoRetailManager_API.3", "TimCoRetailManager_API.3\TimCoRetailManager_API.3.csproj", "{E73A1EA6-99E1-46D4-908B-04E9081372FB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimCoRetailManager_WASM", "TimCoRetailManager_WASM\TimCoRetailManager_WASM.csproj", "{5818FEE5-528C-413B-BFBE-38F118AC626B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TimCoRetailManager_WASM", "TimCoRetailManager_WASM\TimCoRetailManager_WASM.csproj", "{5818FEE5-528C-413B-BFBE-38F118AC626B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

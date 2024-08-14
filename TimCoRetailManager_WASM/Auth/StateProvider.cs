@@ -21,6 +21,7 @@ namespace TimCoRetailManager_WASM.Auth
         {
             _http = http;
             _localStorage = localStorage;
+            anonymous = new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
         }
 
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
