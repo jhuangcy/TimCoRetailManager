@@ -1,5 +1,6 @@
 ﻿using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,19 +15,22 @@ namespace TimCoRetailManager_WASM.Auth
     {
         private readonly HttpClient _http;
         private readonly ILocalStorageService _localStorage;
+        private readonly IConfiguration _config;
 
         readonly AuthenticationState anonymous;
 
-        public StateProvider(HttpClient http, ILocalStorageService localStorage)
+        public StateProvider(HttpClient http, ILocalStorageService localStorage, IConfiguration config)
         {
             _http = http;
             _localStorage = localStorage;
+            _config = config;
+
             anonymous = new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
         }
 
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
-            var token = await _localStorage.GetItemAsync<string>("token");
+            var token = await _localStorage.GetItemAsync<string>(_config["tokenStorage"]);
             if (string.IsNullOrWhiteSpace(token))
                 return anonymous;
 

@@ -1,5 +1,6 @@
 ﻿using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,12 +22,18 @@ namespace TimCoRetailManager_WASM.Auth
         private readonly HttpClient _http;
         private readonly AuthenticationStateProvider _auth;
         private readonly ILocalStorageService _localStorage;
+        private readonly IConfiguration _config;
 
-        public AuthService(HttpClient http, AuthenticationStateProvider auth, ILocalStorageService localStorage)
+        string tokenStorage;
+
+        public AuthService(HttpClient http, AuthenticationStateProvider auth, ILocalStorageService localStorage, IConfiguration config)
         {
             _http = http;
             _auth = auth;
             _localStorage = localStorage;
+            _config = config;
+
+            tokenStorage = config["tokenStorage"];
         }
 
         public async Task<Token> Login(LoginViewModel login)
@@ -37,13 +44,13 @@ namespace TimCoRetailManager_WASM.Auth
                 new KeyValuePair<string, string>("password", login.Password),
             });
 
-            var res = await _http.PostAsync("https://localhost:44372/token", body);
+            var res = await _http.PostAsync(_config["apiUrl"] + _config["tokenEndpoint"], body);
             if (!res.IsSuccessStatusCode)
                 return null;
 
             var content = await res.Content.ReadAsStringAsync();
             var token = JsonSerializer.Deserialize<Token>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-            await _localStorage.SetItemAsync("token", token.access_token);
+            await _localStorage.SetItemAsync(tokenStorage, token.access_token);
 
             (_auth as StateProvider).NotifyLogin(token.access_token);
             _http.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("bearer", token.access_token);
@@ -52,7 +59,7 @@ namespace TimCoRetailManager_WASM.Auth
 
         public async Task Logout()
         {
-            await _localStorage.RemoveItemAsync("token");
+            await _localStorage.RemoveItemAsync(tokenStorage);
             (_auth as StateProvider).NotifyLogout();
             _http.DefaultRequestHeaders.Authorization = null;
         }
