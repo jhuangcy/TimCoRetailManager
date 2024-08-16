@@ -52,16 +52,11 @@ namespace TimCoRetailManager_WASM.Auth
             var token = JsonSerializer.Deserialize<Token>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
             await _localStorage.SetItemAsync(tokenStorage, token.access_token);
 
-            (_auth as StateProvider).NotifyLogin(token.access_token);
+            await (_auth as StateProvider).NotifyLoginAsync(token.access_token);
             _http.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("bearer", token.access_token);
             return token;
         }
 
-        public async Task Logout()
-        {
-            await _localStorage.RemoveItemAsync(tokenStorage);
-            (_auth as StateProvider).NotifyLogout();
-            _http.DefaultRequestHeaders.Authorization = null;
-        }
+        public async Task Logout() => await (_auth as StateProvider).NotifyLogoutAsync();
     }
 }
