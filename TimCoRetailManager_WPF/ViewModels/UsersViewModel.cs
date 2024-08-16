@@ -46,7 +46,7 @@ namespace TimCoRetailManager_WPF.ViewModels
                 Roles.Clear();
                 UserRoles.Clear();
                 UserRoles = new BindingList<string>(value.Roles.Select(r => r.Value).ToList());
-                _ = LoadRoles();
+                LoadRoles().Wait();
                 NotifyOfPropertyChange(() => User);
             }
         }

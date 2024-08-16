@@ -20,6 +20,13 @@
             </button>
         </div>
     </div>
+
+    @if (showAuthError)
+    { 
+        <div class="form-row">
+            <div class="text-danger">@authError</div>
+        </div>
+    }
 </EditForm>
 
 @code {
