@@ -1,34 +1,50 @@
 ﻿@page "/products"
+@inject IProductService productService
+@attribute [Authorize(Roles = "Cashier")]
 
 <h3>Products</h3>
 
 <div class="container-fluid">
-    <div class="row">
-        @for (int i = 0; i < 7; i++)
-        {
-            <div class="col-lg-6 col-xl-4 mb-3">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-12">
-                            <a href="#">
-                                <img src="https://picsum.photos/seed/picsum/1200/900" class="img-fluid" alt="Product 1" />
-                            </a>
-                            <p class="my-2 text-justify">The AI sentence generator is an online tool that is built to automatically write different types of sentences for a given keyword. It uses advanced “AI Technology” and “Large Language Models” to write simple, clear, and relevant random sentences.</p>
-                            <p class="mb-1"><strong>Quantity: </strong>0</p>
+    @if (products.Count == 0)
+    {
+        <div class="row">
+            <p>No products found.</p>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var p in products)
+            {
+                <div class="col-lg-6 col-xl-4 mb-3">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12">
+                                <a href="#">
+                                    <img src="https://picsum.photos/seed/picsum/1200/900" class="img-fluid" alt="@p.Name" />
+                                </a>
+                                <p class="my-2 text-justify">@p.Description</p>
+                                <p class="mb-1"><strong>Quantity:</strong> @p.Qty</p>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="row">
-                        <div class="col-12">
-                            <h4 class="mb-3">Retail Price: $8.99</h4>
+                        <div class="row">
+                            <div class="col-12">
+                                <h5 class="mb-3">@p.Name: $@p.RetailPrice</h5>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        }
-    </div>
+            }
+        </div>
+    }
 </div>
 
 @code {
+    List<Product> products = new();
 
+    protected override async Task OnInitializedAsync()
+    {
+        products = await productService.GetAllAsync();
+    }
 }
