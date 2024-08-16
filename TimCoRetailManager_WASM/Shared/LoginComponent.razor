@@ -1,0 +1,43 @@
+﻿@inject NavigationManager nav
+@inject IAuthService authService
+
+<EditForm Model="model" OnValidSubmit="ExecuteLogin" class="">
+    <div class="form-row">
+        <div class="col-auto">
+            <label for="email" class="sr-only">Email</label>
+            <InputText @bind-Value="model.Email" id="email" class="form-control" placeholder="Email"></InputText>
+        </div>
+
+        <div class="col-auto">
+            <label for="password" class="sr-only">Password</label>
+            <InputText @bind-Value="model.Password" id="password" type="password" class="form-control" placeholder="Password"></InputText>
+        </div>
+
+        <div class="col-auto">
+            <button type="submit" class="btn btn-success">Login</button>
+        </div>
+    </div>
+</EditForm>
+
+@code {
+    LoginViewModel model = new();
+
+    bool showAuthError = false;
+    string authError = "";
+
+    async Task ExecuteLogin()
+    {
+        showAuthError = false;
+
+        var res = await authService.Login(model);
+        if (res != null)
+        {
+            nav.NavigateTo("/");
+        }
+        else
+        {
+            authError = "There was an error trying to log in";
+            showAuthError = true;
+        }
+    }
+}
