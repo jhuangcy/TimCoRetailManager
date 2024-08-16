@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace TimCoRetailManager_API.Models
+namespace TimCoRetailManager_API._3.Models
 {
     public class UserRole
     {

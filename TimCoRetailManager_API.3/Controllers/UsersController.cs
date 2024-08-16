@@ -9,9 +9,9 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using TimCoRetailManager_API._3.Data;
+using TimCoRetailManager_API._3.Models;
 using TimCoRetailManager_API.Library.Models;
 using TimCoRetailManager_API.Library.Services;
-using TimCoRetailManager_API.Models;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -116,7 +116,44 @@ namespace TimCoRetailManager_API._3.Controllers
 
             //await _userManager.AddToRoleAsync(userRole.UserId, userRole.Role);
             await _userManager.AddToRoleAsync(user, userRole.Role);
-            
+        }
+
+        // POST: api/Users/register
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> Register(Register register)
+        {
+            if (ModelState.IsValid)
+            { 
+                var exists = await _userManager.FindByEmailAsync(register.Email);
+                if (exists == null)
+                {
+                    var user = new IdentityUser()
+                    {
+                        Email = register.Email,
+                        UserName = register.Email,
+                        EmailConfirmed = true,
+                    };
+
+                    var res = await _userManager.CreateAsync(user, register.Password);
+                    if (res.Succeeded)
+                    {
+                        exists = await _userManager.FindByEmailAsync(register.Email);
+                        var u = new User()
+                        {
+                            IdentityUserId = exists.Id,
+                            FirstName = register.FirstName,
+                            LastName = register.LastName,
+                            Email = register.Email
+                        };
+
+                        await _userService.InsertOneAsync(u);
+                        return Ok();
+                    }
+                }
+            }
+
+            return BadRequest();
         }
 
         // PUT api/<UsersController>/5
