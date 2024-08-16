@@ -10,6 +10,9 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using TimCoRetailManager_WASM.Auth;
+using TimCoRetailManager_WPF.Library;
+using TimCoRetailManager_WPF.Library.Models;
+using TimCoRetailManager_WPF.Library.Services;
 
 namespace TimCoRetailManager_WASM
 {
@@ -27,6 +30,13 @@ namespace TimCoRetailManager_WASM
             
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<AuthenticationStateProvider, StateProvider>();
+
+            builder.Services.AddSingleton<IApi, Api>();
+            builder.Services.AddTransient<IUserService, UserService>();
+            builder.Services.AddTransient<IProductService, ProductService>();
+            builder.Services.AddTransient<ISaleService, SaleService>();
+
+            builder.Services.AddSingleton<IUser, User>();  // app-wide user
 
             await builder.Build().RunAsync();
         }

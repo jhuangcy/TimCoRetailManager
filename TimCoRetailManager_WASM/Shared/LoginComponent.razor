@@ -1,7 +1,7 @@
 ﻿@inject NavigationManager nav
 @inject IAuthService authService
 
-<EditForm Model="model" OnValidSubmit="ExecuteLogin" class="">
+<EditForm Model="model" OnValidSubmit="ExecuteLogin">
     <div class="form-row">
         <div class="col-auto">
             <label for="email" class="sr-only">Email</label>
@@ -15,6 +15,9 @@
 
         <div class="col-auto">
             <button type="submit" class="btn btn-success">Login</button>
+            <button type="button" class="btn btn-primary" @onclick="GoRegister">
+                <span class="oi oi-external-link" aria-hidden="true"></span> Register
+            </button>
         </div>
     </div>
 </EditForm>
@@ -36,8 +39,13 @@
         }
         else
         {
-            authError = "There was an error trying to log in";
+            authError = "There was an error trying to log in.";
             showAuthError = true;
         }
+    }
+
+    void GoRegister()
+    {
+        nav.NavigateTo("/register");
     }
 }

@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[sp_AddUser]
+﻿CREATE PROCEDURE [dbo].[sp_CreateUser]
 	@IdentityUserId nvarchar(128),
 	@FirstName nvarchar(50),
 	@LastName nvarchar(50),

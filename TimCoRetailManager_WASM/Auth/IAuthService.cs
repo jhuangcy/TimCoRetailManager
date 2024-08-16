@@ -44,7 +44,7 @@ namespace TimCoRetailManager_WASM.Auth
                 new KeyValuePair<string, string>("password", login.Password),
             });
 
-            var res = await _http.PostAsync(_config["apiUrl"] + _config["tokenEndpoint"], body);
+            var res = await _http.PostAsync(_config["api"] + _config["tokenEndpoint"], body);
             if (!res.IsSuccessStatusCode)
                 return null;
 

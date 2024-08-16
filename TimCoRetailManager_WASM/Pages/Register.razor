@@ -1,0 +1,95 @@
+﻿@page "/register"
+@inject NavigationManager nav
+@inject IAuthService authService
+@inject IUserService userService
+
+<h3>Register</h3>
+
+@if (showRegError)
+{
+    <div class="alert alert-danger" role="alert">@regError</div>
+}
+
+<EditForm Model="model" OnValidSubmit="ExecuteRegister" class="card card-body bg-light">
+    <DataAnnotationsValidator></DataAnnotationsValidator>
+
+    <div class="row form-group">
+        <label for="first-name" class="col-md-2 col-form-label">First Name</label>
+        <div class="col-md-10">
+            <InputText @bind-Value="model.FirstName" id="first-name" class="form-control"></InputText>
+            <ValidationMessage For="@(() => model.FirstName)"></ValidationMessage>
+        </div>
+    </div>
+
+    <div class="row form-group">
+        <label for="last-name" class="col-md-2 col-form-label">Last Name</label>
+        <div class="col-md-10">
+            <InputText @bind-Value="model.LastName" id="last-name" class="form-control"></InputText>
+            <ValidationMessage For="@(() => model.LastName)"></ValidationMessage>
+        </div>
+    </div>
+
+    <div class="row form-group">
+        <label for="email" class="col-md-2 col-form-label">Email</label>
+        <div class="col-md-10">
+            <InputText @bind-Value="model.Email" id="email" class="form-control"></InputText>
+            <ValidationMessage For="@(() => model.Email)"></ValidationMessage>
+        </div>
+    </div>
+
+    <div class="row form-group">
+        <label for="password" class="col-md-2 col-form-label">Password</label>
+        <div class="col-md-10">
+            <InputText @bind-Value="model.Password" id="password" type="password" class="form-control"></InputText>
+            <ValidationMessage For="@(() => model.Password)"></ValidationMessage>
+        </div>
+    </div>
+
+    <div class="row form-group">
+        <label for="confirm-password" class="col-md-2 col-form-label">Confirm Password</label>
+        <div class="col-md-10">
+            <InputText @bind-Value="model.ConfirmPassword" id="confirm-password" type="password" class="form-control"></InputText>
+            <ValidationMessage For="@(() => model.ConfirmPassword)"></ValidationMessage>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <button type="submit" class="btn btn-success">Register</button>
+        </div>
+    </div>
+</EditForm>
+
+@code {
+    RegisterViewModel model = new();
+
+    bool showRegError = false;
+    string regError = "";
+
+    async Task ExecuteRegister()
+    {
+        showRegError = false;
+
+        try
+        {
+            await userService.PostAsync(model);
+
+            // Automatically login user
+            var res = await authService.Login(new LoginViewModel { Email = model.Email, Password = model.Password });
+            if (res != null)
+            {
+                nav.NavigateTo("/");
+            }
+            else
+            {
+                regError = "There was an error trying to log in.";
+                showRegError = true;
+            }
+        }
+        catch (Exception ex)
+        {
+            regError = ex.Message;
+            showRegError = true;
+        }
+    }
+}

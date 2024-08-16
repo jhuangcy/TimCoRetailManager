@@ -9,7 +9,7 @@
     <div class="alert alert-danger" role="alert">@authError</div>
 }
 
-<EditForm Model="model" OnValidSubmit="ExecuteLogin" class="card card-body bg-light mt-5">
+<EditForm Model="model" OnValidSubmit="ExecuteLogin" class="card card-body bg-light">
     <DataAnnotationsValidator></DataAnnotationsValidator>
     @*<ValidationSummary></ValidationSummary>*@
 
@@ -53,7 +53,7 @@
         }
         else
         {
-            authError = "There was an error trying to log in";
+            authError = "There was an error trying to log in.";
             showAuthError = true;
         }
     }

@@ -18,6 +18,7 @@ namespace TimCoRetailManager_WPF.Library.Services
         Task<Dictionary<string, string>> GetAllRolesAsync();
         Task AddRoleToUser(string userId, string role);
         Task RemoveRoleFromUser(string userId, string role);
+        Task PostAsync(RegisterViewModel register);
     }
 
     public class UserService : IUserService
@@ -105,6 +106,17 @@ namespace TimCoRetailManager_WPF.Library.Services
         public async Task RemoveRoleFromUser(string userId, string role)
         {
             using (var res = await _api.Http.PostAsJsonAsync("/api/users/removerole", new { userId, role }))
+            {
+                if (!res.IsSuccessStatusCode)
+                    throw new Exception(res.ReasonPhrase);
+            }
+        }
+
+        public async Task PostAsync(RegisterViewModel register)
+        {
+            var body = new { register.FirstName, register.LastName, register.Email, register.Password };
+
+            using (var res = await _api.Http.PostAsJsonAsync("/api/users/register", body))
             {
                 if (!res.IsSuccessStatusCode)
                     throw new Exception(res.ReasonPhrase);

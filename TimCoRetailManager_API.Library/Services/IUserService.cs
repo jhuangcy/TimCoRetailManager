@@ -36,7 +36,7 @@ namespace TimCoRetailManager_API.Library.Services
         public async Task InsertOneAsync(User user)
         {
             var p = new { user.IdentityUserId, user.FirstName, user.LastName, user.Email };
-            await _db.SaveAsync("dbo.sp_AddUser", p, "TimCoRetailManager_DB");
+            await _db.SaveAsync("dbo.sp_CreateUser", p, "TimCoRetailManager_DB");
         }
     }
 }
