@@ -7,5 +7,6 @@
     [Qty] INT NOT NULL DEFAULT 1,
     [Taxable] BIT NOT NULL DEFAULT 1,
     [CreatedDate] DATETIME2 NOT NULL DEFAULT getutcdate(), 
-    [LastModified] DATETIME2 NOT NULL DEFAULT getutcdate()
+    [LastModified] DATETIME2 NOT NULL DEFAULT getutcdate(), 
+    [Image] NVARCHAR(500) NULL
 )

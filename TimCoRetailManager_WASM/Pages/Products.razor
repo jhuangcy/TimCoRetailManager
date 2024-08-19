@@ -1,4 +1,6 @@
 ﻿@page "/products"
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration config
 @inject IProductService productService
 @attribute [Authorize(Roles = "Cashier")]
 
@@ -21,7 +23,14 @@
                         <div class="row">
                             <div class="col-12">
                                 <a href="#">
-                                    <img src="https://picsum.photos/seed/picsum/1200/900" class="img-fluid" alt="@p.Name" />
+                                    @if (string.IsNullOrEmpty(p.Image))
+                                    {
+                                        <img src="https://picsum.photos/seed/picsum/1200/900" class="img-fluid" alt="@p.Name" />
+                                    }
+                                    else
+                                    { 
+                                        <img src="@(api + p.Image)" class="img-fluid" alt="@p.Name" />
+                                    }
                                 </a>
                                 <p class="my-2 text-justify">@p.Description</p>
                                 <p class="mb-1"><strong>Quantity:</strong> @p.Qty</p>
@@ -42,9 +51,11 @@
 
 @code {
     List<Product> products = new();
+    string api;
 
     protected override async Task OnInitializedAsync()
     {
+        api = config["api"];
         products = await productService.GetAllAsync();
     }
 }
