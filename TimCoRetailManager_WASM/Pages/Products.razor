@@ -1,6 +1,7 @@
 ﻿@page "/products"
 @using Microsoft.Extensions.Configuration
 @inject IConfiguration config
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
 @inject IProductService productService
 @attribute [Authorize(Roles = "Cashier")]
 
@@ -50,12 +51,37 @@
 </div>
 
 @code {
+    const string PRODUCTS = "products";
+    const string CACHE_DATE = "cache-date";
+
     List<Product> products = new();
     string api;
 
     protected override async Task OnInitializedAsync()
     {
+        var mins = 0d;
+
         api = config["api"];
-        products = await productService.GetAllAsync();
+        products = await localStorage.GetItemAsync<List<Product>>(PRODUCTS);
+        var cacheDate = await localStorage.GetItemAsync<DateTime?>(CACHE_DATE);
+
+        if (cacheDate != null)
+        {
+            mins = DateTime.UtcNow.Subtract((DateTime)cacheDate).TotalMinutes;
+        }
+
+        if (products == null || cacheDate == null || mins > 10)
+        {
+            try
+            {
+                products = await productService.GetAllAsync();
+                await localStorage.SetItemAsync(PRODUCTS, products);
+                await localStorage.SetItemAsync(CACHE_DATE, DateTime.UtcNow);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
     }
 }
