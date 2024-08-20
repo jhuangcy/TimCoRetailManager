@@ -50,9 +50,18 @@ namespace TimCoRetailManager_WASM.Auth
 
         public async Task<bool> NotifyLoginAsync(string token)
         {
+            // To keep user logged in if no internet
             try
             {
                 await _userService.GetUserAsync(token);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+
+            try
+            {
                 var user = new ClaimsPrincipal(new ClaimsIdentity(JwtHelper.ParseClaims(token), "jwtAuthType"));
                 var state = Task.FromResult(new AuthenticationState(user));
                 NotifyAuthenticationStateChanged(state);
